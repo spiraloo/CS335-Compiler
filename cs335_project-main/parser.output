@@ -1,0 +1,5262 @@
+Grammar
+
+    0 $accept: file_input $end
+
+    1 file_input: file_input1 ENDMARKER
+
+    2 file_input1: ε
+    3            | file_input1 file_input2
+
+    4 file_input2: stmt
+    5            | NEWLINE
+
+    6 funcdef: KEYWORD_DEF NAME parameters ':' suite
+    7        | KEYWORD_DEF NAME parameters OP_ARROW test ':' suite
+
+    8 parameters: '(' ')'
+    9           | '(' typedargslist ')'
+
+   10 typedargslist: tfpdef typedargslist1 typedargslist2 typedargslist3
+   11              | '*' tfpdef typedargslist2 typedargslist5
+   12              | '*' typedargslist2 typedargslist5
+   13              | OP_POWER tfpdef
+   14              | OP_POWER tfpdef ','
+
+   15 typedargslist1: ε
+   16               | '=' test
+
+   17 typedargslist2: ε
+   18               | typedargslist2 ',' tfpdef typedargslist1
+
+   19 typedargslist3: ε
+   20               | ',' typedargslist4
+
+   21 typedargslist4: ε
+   22               | '*' tfpdef typedargslist2 typedargslist5
+   23               | '*' typedargslist2 typedargslist5
+   24               | OP_POWER tfpdef
+   25               | OP_POWER tfpdef ','
+
+   26 typedargslist5: ε
+   27               | ','
+   28               | ',' OP_POWER tfpdef
+   29               | ',' OP_POWER tfpdef ','
+
+   30 tfpdef: NAME ':' test
+   31       | NAME
+
+   32 stmt: simple_stmt
+   33     | compound_stmt
+
+   34 simple_stmt: small_stmt simple_stmt2 ';' NEWLINE
+   35            | small_stmt simple_stmt2 NEWLINE
+
+   36 simple_stmt2: ε
+   37             | simple_stmt2 ';' small_stmt
+
+   38 small_stmt: expr_stmt
+   39           | flow_stmt
+   40           | global_stmt
+   41           | nonlocal_stmt
+   42           | assert_stmt
+
+   43 expr_stmt: testlist_star_expr expr_stmt2
+
+   44 expr_stmt2: annassign
+   45           | augassign testlist
+   46           | expr_stmt3
+
+   47 expr_stmt3: ε
+   48           | expr_stmt3 '=' testlist_star_expr
+
+   49 annassign: ':' test '=' test
+   50          | ':' test
+
+   51 testlist_star_expr: test testlist_star_expr1
+   52                   | test testlist_star_expr1 ','
+
+   53 testlist_star_expr1: ε
+   54                    | testlist_star_expr1 ',' test
+
+   55 augassign: OP_PLUS_EQUALS
+   56          | OP_MINUS_EQUALS
+   57          | OP_MULTIPLY_EQUALS
+   58          | OP_DIVIDE_EQUALS
+   59          | OP_MOD_EQUALS
+   60          | OP_AND_EQUALS
+   61          | OP_OR_EQUALS
+   62          | OP_XOR_EQUALS
+   63          | OP_LEFT_SHIFT_EQUALS
+   64          | OP_RIGHT_SHIFT_EQUALS
+   65          | OP_POWER_EQUALS
+   66          | OP_INT_DIVIDE_EQUALS
+
+   67 flow_stmt: break_stmt
+   68          | continue_stmt
+   69          | return_stmt
+   70          | raise_stmt
+
+   71 break_stmt: KEYWORD_BREAK
+
+   72 continue_stmt: KEYWORD_CONTINUE
+
+   73 return_stmt: KEYWORD_RETURN
+   74            | KEYWORD_RETURN testlist
+
+   75 raise_stmt: KEYWORD_RAISE
+   76           | KEYWORD_RAISE test
+   77           | KEYWORD_RAISE test KEYWORD_FROM test
+
+   78 global_stmt: KEYWORD_GLOBAL NAME global_stmt1
+
+   79 global_stmt1: ε
+   80             | global_stmt1 ',' NAME
+
+   81 nonlocal_stmt: KEYWORD_NONLOCAL NAME nonlocal_stmt1
+
+   82 nonlocal_stmt1: ε
+   83               | nonlocal_stmt1 ',' NAME
+
+   84 assert_stmt: KEYWORD_ASSERT test
+   85            | KEYWORD_ASSERT test ',' test
+
+   86 compound_stmt: if_stmt
+   87              | while_stmt
+   88              | for_stmt
+   89              | funcdef
+   90              | classdef
+
+   91 if_stmt: KEYWORD_IF test ':' suite if_stmt1 if_stmt2
+
+   92 if_stmt1: ε
+   93         | if_stmt1 KEYWORD_ELIF test ':' suite
+
+   94 if_stmt2: ε
+   95         | KEYWORD_ELSE ':' suite
+
+   96 while_stmt: KEYWORD_WHILE test ':' suite while_stmt1
+
+   97 while_stmt1: ε
+   98            | KEYWORD_ELSE ':' suite
+
+   99 for_stmt: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite for_stmt1
+
+  100 for_stmt1: ε
+  101          | KEYWORD_ELSE ':' suite
+
+  102 suite: simple_stmt
+  103      | NEWLINE INDENT suite1 DEDENT
+
+  104 suite1: stmt
+  105       | suite1 stmt
+
+  106 test: or_test test1
+
+  107 test1: ε
+  108      | KEYWORD_IF or_test KEYWORD_ELSE test
+
+  109 or_test: and_test or_test1
+
+  110 or_test1: ε
+  111         | or_test1 KEYWORD_OR and_test
+
+  112 and_test: not_test and_test1
+
+  113 and_test1: ε
+  114          | and_test1 KEYWORD_AND not_test
+
+  115 not_test: KEYWORD_NOT not_test
+  116         | comparison
+
+  117 comparison: expr comparison1
+
+  118 comparison1: ε
+  119            | comparison1 comp_op expr
+
+  120 comp_op: '<'
+  121        | '>'
+  122        | OP_EQUALS
+  123        | OP_GREATER_THAN_EQUALS
+  124        | OP_LESS_THAN_EQUALS
+  125        | OP_NOT_EQUALS
+
+  126 expr: xor_expr expr1
+
+  127 expr1: ε
+  128      | expr1 '|' xor_expr
+
+  129 xor_expr: and_expr xor_expr1
+
+  130 xor_expr1: ε
+  131          | xor_expr1 '^' and_expr
+
+  132 and_expr: shift_expr and_expr1
+
+  133 and_expr1: ε
+  134          | and_expr1 '&' shift_expr
+
+  135 shift_expr: arith_expr shift_expr1
+
+  136 shift_expr1: ε
+  137            | shift_expr1 shift_expr2 arith_expr
+
+  138 shift_expr2: OP_LEFT_SHIFT
+  139            | OP_RIGHT_SHIFT
+
+  140 arith_expr: term arith_expr1
+
+  141 arith_expr1: ε
+  142            | arith_expr1 arith_expr2 term
+
+  143 arith_expr2: '+'
+  144            | '-'
+
+  145 term: factor term1
+
+  146 term1: ε
+  147      | term1 term2 factor
+
+  148 term2: '*'
+  149      | '/'
+  150      | '%'
+  151      | OP_INT_DIVIDE
+
+  152 factor: factor1 factor
+  153       | power
+
+  154 factor1: '+'
+  155        | '-'
+  156        | '~'
+
+  157 power: atom_expr power1
+
+  158 power1: ε
+  159       | OP_POWER factor
+
+  160 atom_expr: atom atom_expr1
+
+  161 atom_expr1: ε
+  162           | atom_expr1 trailer
+
+  163 atom: '(' atom1 ')'
+  164     | '[' atom1 ']'
+  165     | NAME
+  166     | NUMBER
+  167     | atom2
+  168     | KEYWORD_NONE
+  169     | KEYWORD_TRUE
+  170     | KEYWORD_FALSE
+
+  171 atom1: ε
+  172      | testlist_comp
+
+  173 atom2: STRING
+  174      | atom2 STRING
+
+  175 testlist_comp: test testlist_comp2 ','
+  176              | test testlist_comp2
+
+  177 testlist_comp2: ε
+  178               | testlist_comp2 ',' test
+
+  179 trailer: '(' arglist ')'
+  180        | '(' ')'
+  181        | '[' subscriptlist ']'
+  182        | '.' NAME
+
+  183 subscriptlist: subscript subscriptlist2
+  184              | subscript subscriptlist2 ','
+
+  185 subscriptlist2: ε
+  186               | subscriptlist2 ',' subscript
+
+  187 subscript: test
+  188          | test ':' test
+  189          | test ':'
+  190          | ':' test
+  191          | ':'
+
+  192 exprlist: expr exprlist2
+  193         | expr exprlist2 ','
+
+  194 exprlist2: ε
+  195          | exprlist2 ',' expr
+
+  196 testlist: test testlist1 ','
+  197         | test testlist1
+
+  198 testlist1: ε
+  199          | testlist1 ',' test
+
+  200 classdef: KEYWORD_CLASS NAME '(' arglist ')' ':' suite
+  201         | KEYWORD_CLASS NAME ':' suite
+  202         | KEYWORD_CLASS NAME '(' ')' ':' suite
+
+  203 arglist: argument arglist1 ','
+  204        | argument arglist1
+
+  205 arglist1: ε
+  206         | arglist1 ',' argument
+
+  207 argument: test
+  208         | test '=' test
+  209         | '*' test
+  210         | OP_POWER test
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '%' <str> (37) 150
+    '&' <str> (38) 134
+    '(' <str> (40) 8 9 163 179 180 200 202
+    ')' <str> (41) 8 9 163 179 180 200 202
+    '*' <str> (42) 11 12 22 23 148 209
+    '+' <str> (43) 143 154
+    ',' <str> (44) 14 18 20 25 27 28 29 52 54 80 83 85 175 178 184 186 193 195 196 199 203 206
+    '-' <str> (45) 144 155
+    '.' <str> (46) 182
+    '/' <str> (47) 149
+    ':' <str> (58) 6 7 30 49 50 91 93 95 96 98 99 101 188 189 190 191 200 201 202
+    ';' <str> (59) 34 37
+    '<' <str> (60) 120
+    '=' <str> (61) 16 48 49 208
+    '>' <str> (62) 121
+    '[' <str> (91) 164 181
+    ']' <str> (93) 164 181
+    '^' <str> (94) 131
+    '|' <str> (124) 128
+    '~' <str> (126) 156
+    error (256)
+    NEWLINE <str> (258) 5 34 35 103
+    ENDMARKER <str> (259) 1
+    NAME <str> (260) 6 7 30 31 78 80 81 83 165 182 200 201 202
+    INDENT <str> (261) 103
+    DEDENT <str> (262) 103
+    NUMBER <str> (263) 166
+    STRING <str> (264) 173 174
+    KEYWORD_FALSE <str> (265) 170
+    KEYWORD_NONE <str> (266) 168
+    KEYWORD_TRUE <str> (267) 169
+    KEYWORD_AND <str> (268) 114
+    KEYWORD_ASSERT <str> (269) 84 85
+    KEYWORD_BREAK <str> (270) 71
+    KEYWORD_CLASS <str> (271) 200 201 202
+    KEYWORD_CONTINUE <str> (272) 72
+    KEYWORD_DEF <str> (273) 6 7
+    KEYWORD_ELIF <str> (274) 93
+    KEYWORD_ELSE <str> (275) 95 98 101 108
+    KEYWORD_FOR <str> (276) 99
+    KEYWORD_FROM <str> (277) 77
+    KEYWORD_GLOBAL <str> (278) 78
+    KEYWORD_IF <str> (279) 91 108
+    KEYWORD_IN <str> (280) 99
+    KEYWORD_NONLOCAL <str> (281) 81
+    KEYWORD_NOT <str> (282) 115
+    KEYWORD_OR <str> (283) 111
+    KEYWORD_RAISE <str> (284) 75 76 77
+    KEYWORD_RETURN <str> (285) 73 74
+    KEYWORD_WHILE <str> (286) 96
+    OP_POWER <str> (287) 13 14 24 25 28 29 159 210
+    OP_INT_DIVIDE_EQUALS <str> (288) 66
+    OP_POWER_EQUALS <str> (289) 65
+    OP_RIGHT_SHIFT_EQUALS <str> (290) 64
+    OP_LEFT_SHIFT_EQUALS <str> (291) 63
+    OP_XOR_EQUALS <str> (292) 62
+    OP_OR_EQUALS <str> (293) 61
+    OP_AND_EQUALS <str> (294) 60
+    OP_MOD_EQUALS <str> (295) 59
+    OP_DIVIDE_EQUALS <str> (296) 58
+    OP_MULTIPLY_EQUALS <str> (297) 57
+    OP_MINUS_EQUALS <str> (298) 56
+    OP_PLUS_EQUALS <str> (299) 55
+    OP_NOT_EQUALS <str> (300) 125
+    OP_EQUALS <str> (301) 122
+    OP_RIGHT_SHIFT <str> (302) 139
+    OP_LEFT_SHIFT <str> (303) 138
+    OP_INT_DIVIDE <str> (304) 151
+    OP_GREATER_THAN_EQUALS <str> (305) 123
+    OP_LESS_THAN_EQUALS <str> (306) 124
+    OP_ARROW <str> (307) 7
+
+
+Nonterminals, with rules where they appear
+
+    $accept (73)
+        on left: 0
+    file_input <ptr> (74)
+        on left: 1
+        on right: 0
+    file_input1 <ptr> (75)
+        on left: 2 3
+        on right: 1 3
+    file_input2 <ptr> (76)
+        on left: 4 5
+        on right: 3
+    funcdef <ptr> (77)
+        on left: 6 7
+        on right: 89
+    parameters <ptr> (78)
+        on left: 8 9
+        on right: 6 7
+    typedargslist <ptr> (79)
+        on left: 10 11 12 13 14
+        on right: 9
+    typedargslist1 <ptr> (80)
+        on left: 15 16
+        on right: 10 18
+    typedargslist2 <ptr> (81)
+        on left: 17 18
+        on right: 10 11 12 18 22 23
+    typedargslist3 <ptr> (82)
+        on left: 19 20
+        on right: 10
+    typedargslist4 <ptr> (83)
+        on left: 21 22 23 24 25
+        on right: 20
+    typedargslist5 <ptr> (84)
+        on left: 26 27 28 29
+        on right: 11 12 22 23
+    tfpdef <ptr> (85)
+        on left: 30 31
+        on right: 10 11 13 14 18 22 24 25 28 29
+    stmt <ptr> (86)
+        on left: 32 33
+        on right: 4 104 105
+    simple_stmt <ptr> (87)
+        on left: 34 35
+        on right: 32 102
+    simple_stmt2 <ptr> (88)
+        on left: 36 37
+        on right: 34 35 37
+    small_stmt <ptr> (89)
+        on left: 38 39 40 41 42
+        on right: 34 35 37
+    expr_stmt <ptr> (90)
+        on left: 43
+        on right: 38
+    expr_stmt2 <ptr> (91)
+        on left: 44 45 46
+        on right: 43
+    expr_stmt3 <ptr> (92)
+        on left: 47 48
+        on right: 46 48
+    annassign <ptr> (93)
+        on left: 49 50
+        on right: 44
+    testlist_star_expr <ptr> (94)
+        on left: 51 52
+        on right: 43 48
+    testlist_star_expr1 <ptr> (95)
+        on left: 53 54
+        on right: 51 52 54
+    augassign <ptr> (96)
+        on left: 55 56 57 58 59 60 61 62 63 64 65 66
+        on right: 45
+    flow_stmt <ptr> (97)
+        on left: 67 68 69 70
+        on right: 39
+    break_stmt <ptr> (98)
+        on left: 71
+        on right: 67
+    continue_stmt <ptr> (99)
+        on left: 72
+        on right: 68
+    return_stmt <ptr> (100)
+        on left: 73 74
+        on right: 69
+    raise_stmt <ptr> (101)
+        on left: 75 76 77
+        on right: 70
+    global_stmt <ptr> (102)
+        on left: 78
+        on right: 40
+    global_stmt1 <ptr> (103)
+        on left: 79 80
+        on right: 78 80
+    nonlocal_stmt <ptr> (104)
+        on left: 81
+        on right: 41
+    nonlocal_stmt1 <ptr> (105)
+        on left: 82 83
+        on right: 81 83
+    assert_stmt <ptr> (106)
+        on left: 84 85
+        on right: 42
+    compound_stmt <ptr> (107)
+        on left: 86 87 88 89 90
+        on right: 33
+    if_stmt <ptr> (108)
+        on left: 91
+        on right: 86
+    if_stmt1 <ptr> (109)
+        on left: 92 93
+        on right: 91 93
+    if_stmt2 <ptr> (110)
+        on left: 94 95
+        on right: 91
+    while_stmt <ptr> (111)
+        on left: 96
+        on right: 87
+    while_stmt1 <ptr> (112)
+        on left: 97 98
+        on right: 96
+    for_stmt <ptr> (113)
+        on left: 99
+        on right: 88
+    for_stmt1 <ptr> (114)
+        on left: 100 101
+        on right: 99
+    suite <ptr> (115)
+        on left: 102 103
+        on right: 6 7 91 93 95 96 98 99 101 200 201 202
+    suite1 <ptr> (116)
+        on left: 104 105
+        on right: 103 105
+    test <ptr> (117)
+        on left: 106
+        on right: 7 16 30 49 50 51 52 54 76 77 84 85 91 93 96 108 175 176 178 187 188 189 190 196 197 199 207 208 209 210
+    test1 <ptr> (118)
+        on left: 107 108
+        on right: 106
+    or_test <ptr> (119)
+        on left: 109
+        on right: 106 108
+    or_test1 <ptr> (120)
+        on left: 110 111
+        on right: 109 111
+    and_test <ptr> (121)
+        on left: 112
+        on right: 109 111
+    and_test1 <ptr> (122)
+        on left: 113 114
+        on right: 112 114
+    not_test <ptr> (123)
+        on left: 115 116
+        on right: 112 114 115
+    comparison <ptr> (124)
+        on left: 117
+        on right: 116
+    comparison1 <ptr> (125)
+        on left: 118 119
+        on right: 117 119
+    comp_op <ptr> (126)
+        on left: 120 121 122 123 124 125
+        on right: 119
+    expr <ptr> (127)
+        on left: 126
+        on right: 117 119 192 193 195
+    expr1 <ptr> (128)
+        on left: 127 128
+        on right: 126 128
+    xor_expr <ptr> (129)
+        on left: 129
+        on right: 126 128
+    xor_expr1 <ptr> (130)
+        on left: 130 131
+        on right: 129 131
+    and_expr <ptr> (131)
+        on left: 132
+        on right: 129 131
+    and_expr1 <ptr> (132)
+        on left: 133 134
+        on right: 132 134
+    shift_expr <ptr> (133)
+        on left: 135
+        on right: 132 134
+    shift_expr1 <ptr> (134)
+        on left: 136 137
+        on right: 135 137
+    shift_expr2 <ptr> (135)
+        on left: 138 139
+        on right: 137
+    arith_expr <ptr> (136)
+        on left: 140
+        on right: 135 137
+    arith_expr1 <ptr> (137)
+        on left: 141 142
+        on right: 140 142
+    arith_expr2 <ptr> (138)
+        on left: 143 144
+        on right: 142
+    term <ptr> (139)
+        on left: 145
+        on right: 140 142
+    term1 <ptr> (140)
+        on left: 146 147
+        on right: 145 147
+    term2 <ptr> (141)
+        on left: 148 149 150 151
+        on right: 147
+    factor <ptr> (142)
+        on left: 152 153
+        on right: 145 147 152 159
+    factor1 <ptr> (143)
+        on left: 154 155 156
+        on right: 152
+    power <ptr> (144)
+        on left: 157
+        on right: 153
+    power1 <ptr> (145)
+        on left: 158 159
+        on right: 157
+    atom_expr <ptr> (146)
+        on left: 160
+        on right: 157
+    atom_expr1 <ptr> (147)
+        on left: 161 162
+        on right: 160 162
+    atom <ptr> (148)
+        on left: 163 164 165 166 167 168 169 170
+        on right: 160
+    atom1 <ptr> (149)
+        on left: 171 172
+        on right: 163 164
+    atom2 <ptr> (150)
+        on left: 173 174
+        on right: 167 174
+    testlist_comp <ptr> (151)
+        on left: 175 176
+        on right: 172
+    testlist_comp2 <ptr> (152)
+        on left: 177 178
+        on right: 175 176 178
+    trailer <ptr> (153)
+        on left: 179 180 181 182
+        on right: 162
+    subscriptlist <ptr> (154)
+        on left: 183 184
+        on right: 181
+    subscriptlist2 <ptr> (155)
+        on left: 185 186
+        on right: 183 184 186
+    subscript <ptr> (156)
+        on left: 187 188 189 190 191
+        on right: 183 184 186
+    exprlist <ptr> (157)
+        on left: 192 193
+        on right: 99
+    exprlist2 <ptr> (158)
+        on left: 194 195
+        on right: 192 193 195
+    testlist <ptr> (159)
+        on left: 196 197
+        on right: 45 74 99
+    testlist1 <ptr> (160)
+        on left: 198 199
+        on right: 196 197 199
+    classdef <ptr> (161)
+        on left: 200 201 202
+        on right: 90
+    arglist <ptr> (162)
+        on left: 203 204
+        on right: 179 200
+    arglist1 <ptr> (163)
+        on left: 205 206
+        on right: 203 204 206
+    argument <ptr> (164)
+        on left: 207 208 209 210
+        on right: 203 204 206
+
+
+State 0
+
+    0 $accept: • file_input $end
+
+    $default  reduce using rule 2 (file_input1)
+
+    file_input   go to state 1
+    file_input1  go to state 2
+
+
+State 1
+
+    0 $accept: file_input • $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 file_input: file_input1 • ENDMARKER
+    3 file_input1: file_input1 • file_input2
+
+    NEWLINE           shift, and go to state 4
+    ENDMARKER         shift, and go to state 5
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CLASS     shift, and go to state 14
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_DEF       shift, and go to state 16
+    KEYWORD_FOR       shift, and go to state 17
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_IF        shift, and go to state 19
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    KEYWORD_WHILE     shift, and go to state 24
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    file_input2         go to state 30
+    funcdef             go to state 31
+    stmt                go to state 32
+    simple_stmt         go to state 33
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    compound_stmt       go to state 45
+    if_stmt             go to state 46
+    while_stmt          go to state 47
+    for_stmt            go to state 48
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+    classdef            go to state 66
+
+
+State 3
+
+    0 $accept: file_input $end •
+
+    $default  accept
+
+
+State 4
+
+    5 file_input2: NEWLINE •
+
+    $default  reduce using rule 5 (file_input2)
+
+
+State 5
+
+    1 file_input: file_input1 ENDMARKER •
+
+    $default  reduce using rule 1 (file_input)
+
+
+State 6
+
+  165 atom: NAME •
+
+    $default  reduce using rule 165 (atom)
+
+
+State 7
+
+  166 atom: NUMBER •
+
+    $default  reduce using rule 166 (atom)
+
+
+State 8
+
+  173 atom2: STRING •
+
+    $default  reduce using rule 173 (atom2)
+
+
+State 9
+
+  170 atom: KEYWORD_FALSE •
+
+    $default  reduce using rule 170 (atom)
+
+
+State 10
+
+  168 atom: KEYWORD_NONE •
+
+    $default  reduce using rule 168 (atom)
+
+
+State 11
+
+  169 atom: KEYWORD_TRUE •
+
+    $default  reduce using rule 169 (atom)
+
+
+State 12
+
+   84 assert_stmt: KEYWORD_ASSERT • test
+   85            | KEYWORD_ASSERT • test ',' test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 67
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 13
+
+   71 break_stmt: KEYWORD_BREAK •
+
+    $default  reduce using rule 71 (break_stmt)
+
+
+State 14
+
+  200 classdef: KEYWORD_CLASS • NAME '(' arglist ')' ':' suite
+  201         | KEYWORD_CLASS • NAME ':' suite
+  202         | KEYWORD_CLASS • NAME '(' ')' ':' suite
+
+    NAME  shift, and go to state 68
+
+
+State 15
+
+   72 continue_stmt: KEYWORD_CONTINUE •
+
+    $default  reduce using rule 72 (continue_stmt)
+
+
+State 16
+
+    6 funcdef: KEYWORD_DEF • NAME parameters ':' suite
+    7        | KEYWORD_DEF • NAME parameters OP_ARROW test ':' suite
+
+    NAME  shift, and go to state 69
+
+
+State 17
+
+   99 for_stmt: KEYWORD_FOR • exprlist KEYWORD_IN testlist ':' suite for_stmt1
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    expr        go to state 70
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    exprlist    go to state 71
+
+
+State 18
+
+   78 global_stmt: KEYWORD_GLOBAL • NAME global_stmt1
+
+    NAME  shift, and go to state 72
+
+
+State 19
+
+   91 if_stmt: KEYWORD_IF • test ':' suite if_stmt1 if_stmt2
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 73
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 20
+
+   81 nonlocal_stmt: KEYWORD_NONLOCAL • NAME nonlocal_stmt1
+
+    NAME  shift, and go to state 74
+
+
+State 21
+
+  115 not_test: KEYWORD_NOT • not_test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    not_test    go to state 75
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 22
+
+   75 raise_stmt: KEYWORD_RAISE •
+   76           | KEYWORD_RAISE • test
+   77           | KEYWORD_RAISE • test KEYWORD_FROM test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 75 (raise_stmt)
+
+    test        go to state 76
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 23
+
+   73 return_stmt: KEYWORD_RETURN •
+   74            | KEYWORD_RETURN • testlist
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 73 (return_stmt)
+
+    test        go to state 77
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    testlist    go to state 78
+
+
+State 24
+
+   96 while_stmt: KEYWORD_WHILE • test ':' suite while_stmt1
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 79
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 25
+
+  163 atom: '(' • atom1 ')'
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 171 (atom1)
+
+    test           go to state 80
+    or_test        go to state 50
+    and_test       go to state 51
+    not_test       go to state 52
+    comparison     go to state 53
+    expr           go to state 54
+    xor_expr       go to state 55
+    and_expr       go to state 56
+    shift_expr     go to state 57
+    arith_expr     go to state 58
+    term           go to state 59
+    factor         go to state 60
+    factor1        go to state 61
+    power          go to state 62
+    atom_expr      go to state 63
+    atom           go to state 64
+    atom1          go to state 81
+    atom2          go to state 65
+    testlist_comp  go to state 82
+
+
+State 26
+
+  164 atom: '[' • atom1 ']'
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 171 (atom1)
+
+    test           go to state 80
+    or_test        go to state 50
+    and_test       go to state 51
+    not_test       go to state 52
+    comparison     go to state 53
+    expr           go to state 54
+    xor_expr       go to state 55
+    and_expr       go to state 56
+    shift_expr     go to state 57
+    arith_expr     go to state 58
+    term           go to state 59
+    factor         go to state 60
+    factor1        go to state 61
+    power          go to state 62
+    atom_expr      go to state 63
+    atom           go to state 64
+    atom1          go to state 83
+    atom2          go to state 65
+    testlist_comp  go to state 82
+
+
+State 27
+
+  154 factor1: '+' •
+
+    $default  reduce using rule 154 (factor1)
+
+
+State 28
+
+  155 factor1: '-' •
+
+    $default  reduce using rule 155 (factor1)
+
+
+State 29
+
+  156 factor1: '~' •
+
+    $default  reduce using rule 156 (factor1)
+
+
+State 30
+
+    3 file_input1: file_input1 file_input2 •
+
+    $default  reduce using rule 3 (file_input1)
+
+
+State 31
+
+   89 compound_stmt: funcdef •
+
+    $default  reduce using rule 89 (compound_stmt)
+
+
+State 32
+
+    4 file_input2: stmt •
+
+    $default  reduce using rule 4 (file_input2)
+
+
+State 33
+
+   32 stmt: simple_stmt •
+
+    $default  reduce using rule 32 (stmt)
+
+
+State 34
+
+   34 simple_stmt: small_stmt • simple_stmt2 ';' NEWLINE
+   35            | small_stmt • simple_stmt2 NEWLINE
+
+    $default  reduce using rule 36 (simple_stmt2)
+
+    simple_stmt2  go to state 84
+
+
+State 35
+
+   38 small_stmt: expr_stmt •
+
+    $default  reduce using rule 38 (small_stmt)
+
+
+State 36
+
+   43 expr_stmt: testlist_star_expr • expr_stmt2
+
+    OP_INT_DIVIDE_EQUALS   shift, and go to state 85
+    OP_POWER_EQUALS        shift, and go to state 86
+    OP_RIGHT_SHIFT_EQUALS  shift, and go to state 87
+    OP_LEFT_SHIFT_EQUALS   shift, and go to state 88
+    OP_XOR_EQUALS          shift, and go to state 89
+    OP_OR_EQUALS           shift, and go to state 90
+    OP_AND_EQUALS          shift, and go to state 91
+    OP_MOD_EQUALS          shift, and go to state 92
+    OP_DIVIDE_EQUALS       shift, and go to state 93
+    OP_MULTIPLY_EQUALS     shift, and go to state 94
+    OP_MINUS_EQUALS        shift, and go to state 95
+    OP_PLUS_EQUALS         shift, and go to state 96
+    ':'                    shift, and go to state 97
+
+    $default  reduce using rule 47 (expr_stmt3)
+
+    expr_stmt2  go to state 98
+    expr_stmt3  go to state 99
+    annassign   go to state 100
+    augassign   go to state 101
+
+
+State 37
+
+   39 small_stmt: flow_stmt •
+
+    $default  reduce using rule 39 (small_stmt)
+
+
+State 38
+
+   67 flow_stmt: break_stmt •
+
+    $default  reduce using rule 67 (flow_stmt)
+
+
+State 39
+
+   68 flow_stmt: continue_stmt •
+
+    $default  reduce using rule 68 (flow_stmt)
+
+
+State 40
+
+   69 flow_stmt: return_stmt •
+
+    $default  reduce using rule 69 (flow_stmt)
+
+
+State 41
+
+   70 flow_stmt: raise_stmt •
+
+    $default  reduce using rule 70 (flow_stmt)
+
+
+State 42
+
+   40 small_stmt: global_stmt •
+
+    $default  reduce using rule 40 (small_stmt)
+
+
+State 43
+
+   41 small_stmt: nonlocal_stmt •
+
+    $default  reduce using rule 41 (small_stmt)
+
+
+State 44
+
+   42 small_stmt: assert_stmt •
+
+    $default  reduce using rule 42 (small_stmt)
+
+
+State 45
+
+   33 stmt: compound_stmt •
+
+    $default  reduce using rule 33 (stmt)
+
+
+State 46
+
+   86 compound_stmt: if_stmt •
+
+    $default  reduce using rule 86 (compound_stmt)
+
+
+State 47
+
+   87 compound_stmt: while_stmt •
+
+    $default  reduce using rule 87 (compound_stmt)
+
+
+State 48
+
+   88 compound_stmt: for_stmt •
+
+    $default  reduce using rule 88 (compound_stmt)
+
+
+State 49
+
+   51 testlist_star_expr: test • testlist_star_expr1
+   52                   | test • testlist_star_expr1 ','
+
+    $default  reduce using rule 53 (testlist_star_expr1)
+
+    testlist_star_expr1  go to state 102
+
+
+State 50
+
+  106 test: or_test • test1
+
+    KEYWORD_IF  shift, and go to state 103
+
+    $default  reduce using rule 107 (test1)
+
+    test1  go to state 104
+
+
+State 51
+
+  109 or_test: and_test • or_test1
+
+    $default  reduce using rule 110 (or_test1)
+
+    or_test1  go to state 105
+
+
+State 52
+
+  112 and_test: not_test • and_test1
+
+    $default  reduce using rule 113 (and_test1)
+
+    and_test1  go to state 106
+
+
+State 53
+
+  116 not_test: comparison •
+
+    $default  reduce using rule 116 (not_test)
+
+
+State 54
+
+  117 comparison: expr • comparison1
+
+    $default  reduce using rule 118 (comparison1)
+
+    comparison1  go to state 107
+
+
+State 55
+
+  126 expr: xor_expr • expr1
+
+    $default  reduce using rule 127 (expr1)
+
+    expr1  go to state 108
+
+
+State 56
+
+  129 xor_expr: and_expr • xor_expr1
+
+    $default  reduce using rule 130 (xor_expr1)
+
+    xor_expr1  go to state 109
+
+
+State 57
+
+  132 and_expr: shift_expr • and_expr1
+
+    $default  reduce using rule 133 (and_expr1)
+
+    and_expr1  go to state 110
+
+
+State 58
+
+  135 shift_expr: arith_expr • shift_expr1
+
+    $default  reduce using rule 136 (shift_expr1)
+
+    shift_expr1  go to state 111
+
+
+State 59
+
+  140 arith_expr: term • arith_expr1
+
+    $default  reduce using rule 141 (arith_expr1)
+
+    arith_expr1  go to state 112
+
+
+State 60
+
+  145 term: factor • term1
+
+    $default  reduce using rule 146 (term1)
+
+    term1  go to state 113
+
+
+State 61
+
+  152 factor: factor1 • factor
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    factor     go to state 114
+    factor1    go to state 61
+    power      go to state 62
+    atom_expr  go to state 63
+    atom       go to state 64
+    atom2      go to state 65
+
+
+State 62
+
+  153 factor: power •
+
+    $default  reduce using rule 153 (factor)
+
+
+State 63
+
+  157 power: atom_expr • power1
+
+    OP_POWER  shift, and go to state 115
+
+    $default  reduce using rule 158 (power1)
+
+    power1  go to state 116
+
+
+State 64
+
+  160 atom_expr: atom • atom_expr1
+
+    $default  reduce using rule 161 (atom_expr1)
+
+    atom_expr1  go to state 117
+
+
+State 65
+
+  167 atom: atom2 •
+  174 atom2: atom2 • STRING
+
+    STRING  shift, and go to state 118
+
+    $default  reduce using rule 167 (atom)
+
+
+State 66
+
+   90 compound_stmt: classdef •
+
+    $default  reduce using rule 90 (compound_stmt)
+
+
+State 67
+
+   84 assert_stmt: KEYWORD_ASSERT test •
+   85            | KEYWORD_ASSERT test • ',' test
+
+    ','  shift, and go to state 119
+
+    $default  reduce using rule 84 (assert_stmt)
+
+
+State 68
+
+  200 classdef: KEYWORD_CLASS NAME • '(' arglist ')' ':' suite
+  201         | KEYWORD_CLASS NAME • ':' suite
+  202         | KEYWORD_CLASS NAME • '(' ')' ':' suite
+
+    ':'  shift, and go to state 120
+    '('  shift, and go to state 121
+
+
+State 69
+
+    6 funcdef: KEYWORD_DEF NAME • parameters ':' suite
+    7        | KEYWORD_DEF NAME • parameters OP_ARROW test ':' suite
+
+    '('  shift, and go to state 122
+
+    parameters  go to state 123
+
+
+State 70
+
+  192 exprlist: expr • exprlist2
+  193         | expr • exprlist2 ','
+
+    $default  reduce using rule 194 (exprlist2)
+
+    exprlist2  go to state 124
+
+
+State 71
+
+   99 for_stmt: KEYWORD_FOR exprlist • KEYWORD_IN testlist ':' suite for_stmt1
+
+    KEYWORD_IN  shift, and go to state 125
+
+
+State 72
+
+   78 global_stmt: KEYWORD_GLOBAL NAME • global_stmt1
+
+    $default  reduce using rule 79 (global_stmt1)
+
+    global_stmt1  go to state 126
+
+
+State 73
+
+   91 if_stmt: KEYWORD_IF test • ':' suite if_stmt1 if_stmt2
+
+    ':'  shift, and go to state 127
+
+
+State 74
+
+   81 nonlocal_stmt: KEYWORD_NONLOCAL NAME • nonlocal_stmt1
+
+    $default  reduce using rule 82 (nonlocal_stmt1)
+
+    nonlocal_stmt1  go to state 128
+
+
+State 75
+
+  115 not_test: KEYWORD_NOT not_test •
+
+    $default  reduce using rule 115 (not_test)
+
+
+State 76
+
+   76 raise_stmt: KEYWORD_RAISE test •
+   77           | KEYWORD_RAISE test • KEYWORD_FROM test
+
+    KEYWORD_FROM  shift, and go to state 129
+
+    $default  reduce using rule 76 (raise_stmt)
+
+
+State 77
+
+  196 testlist: test • testlist1 ','
+  197         | test • testlist1
+
+    $default  reduce using rule 198 (testlist1)
+
+    testlist1  go to state 130
+
+
+State 78
+
+   74 return_stmt: KEYWORD_RETURN testlist •
+
+    $default  reduce using rule 74 (return_stmt)
+
+
+State 79
+
+   96 while_stmt: KEYWORD_WHILE test • ':' suite while_stmt1
+
+    ':'  shift, and go to state 131
+
+
+State 80
+
+  175 testlist_comp: test • testlist_comp2 ','
+  176              | test • testlist_comp2
+
+    $default  reduce using rule 177 (testlist_comp2)
+
+    testlist_comp2  go to state 132
+
+
+State 81
+
+  163 atom: '(' atom1 • ')'
+
+    ')'  shift, and go to state 133
+
+
+State 82
+
+  172 atom1: testlist_comp •
+
+    $default  reduce using rule 172 (atom1)
+
+
+State 83
+
+  164 atom: '[' atom1 • ']'
+
+    ']'  shift, and go to state 134
+
+
+State 84
+
+   34 simple_stmt: small_stmt simple_stmt2 • ';' NEWLINE
+   35            | small_stmt simple_stmt2 • NEWLINE
+   37 simple_stmt2: simple_stmt2 • ';' small_stmt
+
+    NEWLINE  shift, and go to state 135
+    ';'      shift, and go to state 136
+
+
+State 85
+
+   66 augassign: OP_INT_DIVIDE_EQUALS •
+
+    $default  reduce using rule 66 (augassign)
+
+
+State 86
+
+   65 augassign: OP_POWER_EQUALS •
+
+    $default  reduce using rule 65 (augassign)
+
+
+State 87
+
+   64 augassign: OP_RIGHT_SHIFT_EQUALS •
+
+    $default  reduce using rule 64 (augassign)
+
+
+State 88
+
+   63 augassign: OP_LEFT_SHIFT_EQUALS •
+
+    $default  reduce using rule 63 (augassign)
+
+
+State 89
+
+   62 augassign: OP_XOR_EQUALS •
+
+    $default  reduce using rule 62 (augassign)
+
+
+State 90
+
+   61 augassign: OP_OR_EQUALS •
+
+    $default  reduce using rule 61 (augassign)
+
+
+State 91
+
+   60 augassign: OP_AND_EQUALS •
+
+    $default  reduce using rule 60 (augassign)
+
+
+State 92
+
+   59 augassign: OP_MOD_EQUALS •
+
+    $default  reduce using rule 59 (augassign)
+
+
+State 93
+
+   58 augassign: OP_DIVIDE_EQUALS •
+
+    $default  reduce using rule 58 (augassign)
+
+
+State 94
+
+   57 augassign: OP_MULTIPLY_EQUALS •
+
+    $default  reduce using rule 57 (augassign)
+
+
+State 95
+
+   56 augassign: OP_MINUS_EQUALS •
+
+    $default  reduce using rule 56 (augassign)
+
+
+State 96
+
+   55 augassign: OP_PLUS_EQUALS •
+
+    $default  reduce using rule 55 (augassign)
+
+
+State 97
+
+   49 annassign: ':' • test '=' test
+   50          | ':' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 137
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 98
+
+   43 expr_stmt: testlist_star_expr expr_stmt2 •
+
+    $default  reduce using rule 43 (expr_stmt)
+
+
+State 99
+
+   46 expr_stmt2: expr_stmt3 •
+   48 expr_stmt3: expr_stmt3 • '=' testlist_star_expr
+
+    '='  shift, and go to state 138
+
+    $default  reduce using rule 46 (expr_stmt2)
+
+
+State 100
+
+   44 expr_stmt2: annassign •
+
+    $default  reduce using rule 44 (expr_stmt2)
+
+
+State 101
+
+   45 expr_stmt2: augassign • testlist
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 77
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    testlist    go to state 139
+
+
+State 102
+
+   51 testlist_star_expr: test testlist_star_expr1 •
+   52                   | test testlist_star_expr1 • ','
+   54 testlist_star_expr1: testlist_star_expr1 • ',' test
+
+    ','  shift, and go to state 140
+
+    $default  reduce using rule 51 (testlist_star_expr)
+
+
+State 103
+
+  108 test1: KEYWORD_IF • or_test KEYWORD_ELSE test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    or_test     go to state 141
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 104
+
+  106 test: or_test test1 •
+
+    $default  reduce using rule 106 (test)
+
+
+State 105
+
+  109 or_test: and_test or_test1 •
+  111 or_test1: or_test1 • KEYWORD_OR and_test
+
+    KEYWORD_OR  shift, and go to state 142
+
+    $default  reduce using rule 109 (or_test)
+
+
+State 106
+
+  112 and_test: not_test and_test1 •
+  114 and_test1: and_test1 • KEYWORD_AND not_test
+
+    KEYWORD_AND  shift, and go to state 143
+
+    $default  reduce using rule 112 (and_test)
+
+
+State 107
+
+  117 comparison: expr comparison1 •
+  119 comparison1: comparison1 • comp_op expr
+
+    OP_NOT_EQUALS           shift, and go to state 144
+    OP_EQUALS               shift, and go to state 145
+    OP_GREATER_THAN_EQUALS  shift, and go to state 146
+    OP_LESS_THAN_EQUALS     shift, and go to state 147
+    '<'                     shift, and go to state 148
+    '>'                     shift, and go to state 149
+
+    $default  reduce using rule 117 (comparison)
+
+    comp_op  go to state 150
+
+
+State 108
+
+  126 expr: xor_expr expr1 •
+  128 expr1: expr1 • '|' xor_expr
+
+    '|'  shift, and go to state 151
+
+    $default  reduce using rule 126 (expr)
+
+
+State 109
+
+  129 xor_expr: and_expr xor_expr1 •
+  131 xor_expr1: xor_expr1 • '^' and_expr
+
+    '^'  shift, and go to state 152
+
+    $default  reduce using rule 129 (xor_expr)
+
+
+State 110
+
+  132 and_expr: shift_expr and_expr1 •
+  134 and_expr1: and_expr1 • '&' shift_expr
+
+    '&'  shift, and go to state 153
+
+    $default  reduce using rule 132 (and_expr)
+
+
+State 111
+
+  135 shift_expr: arith_expr shift_expr1 •
+  137 shift_expr1: shift_expr1 • shift_expr2 arith_expr
+
+    OP_RIGHT_SHIFT  shift, and go to state 154
+    OP_LEFT_SHIFT   shift, and go to state 155
+
+    $default  reduce using rule 135 (shift_expr)
+
+    shift_expr2  go to state 156
+
+
+State 112
+
+  140 arith_expr: term arith_expr1 •
+  142 arith_expr1: arith_expr1 • arith_expr2 term
+
+    '+'  shift, and go to state 157
+    '-'  shift, and go to state 158
+
+    $default  reduce using rule 140 (arith_expr)
+
+    arith_expr2  go to state 159
+
+
+State 113
+
+  145 term: factor term1 •
+  147 term1: term1 • term2 factor
+
+    OP_INT_DIVIDE  shift, and go to state 160
+    '*'            shift, and go to state 161
+    '/'            shift, and go to state 162
+    '%'            shift, and go to state 163
+
+    $default  reduce using rule 145 (term)
+
+    term2  go to state 164
+
+
+State 114
+
+  152 factor: factor1 factor •
+
+    $default  reduce using rule 152 (factor)
+
+
+State 115
+
+  159 power1: OP_POWER • factor
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    factor     go to state 165
+    factor1    go to state 61
+    power      go to state 62
+    atom_expr  go to state 63
+    atom       go to state 64
+    atom2      go to state 65
+
+
+State 116
+
+  157 power: atom_expr power1 •
+
+    $default  reduce using rule 157 (power)
+
+
+State 117
+
+  160 atom_expr: atom atom_expr1 •
+  162 atom_expr1: atom_expr1 • trailer
+
+    '.'  shift, and go to state 166
+    '('  shift, and go to state 167
+    '['  shift, and go to state 168
+
+    $default  reduce using rule 160 (atom_expr)
+
+    trailer  go to state 169
+
+
+State 118
+
+  174 atom2: atom2 STRING •
+
+    $default  reduce using rule 174 (atom2)
+
+
+State 119
+
+   85 assert_stmt: KEYWORD_ASSERT test ',' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 170
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 120
+
+  201 classdef: KEYWORD_CLASS NAME ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 173
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 121
+
+  200 classdef: KEYWORD_CLASS NAME '(' • arglist ')' ':' suite
+  202         | KEYWORD_CLASS NAME '(' • ')' ':' suite
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    OP_POWER       shift, and go to state 174
+    '('            shift, and go to state 25
+    ')'            shift, and go to state 175
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '*'            shift, and go to state 176
+    '~'            shift, and go to state 29
+
+    test        go to state 177
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    arglist     go to state 178
+    argument    go to state 179
+
+
+State 122
+
+    8 parameters: '(' • ')'
+    9           | '(' • typedargslist ')'
+
+    NAME      shift, and go to state 180
+    OP_POWER  shift, and go to state 181
+    ')'       shift, and go to state 182
+    '*'       shift, and go to state 183
+
+    typedargslist  go to state 184
+    tfpdef         go to state 185
+
+
+State 123
+
+    6 funcdef: KEYWORD_DEF NAME parameters • ':' suite
+    7        | KEYWORD_DEF NAME parameters • OP_ARROW test ':' suite
+
+    OP_ARROW  shift, and go to state 186
+    ':'       shift, and go to state 187
+
+
+State 124
+
+  192 exprlist: expr exprlist2 •
+  193         | expr exprlist2 • ','
+  195 exprlist2: exprlist2 • ',' expr
+
+    ','  shift, and go to state 188
+
+    $default  reduce using rule 192 (exprlist)
+
+
+State 125
+
+   99 for_stmt: KEYWORD_FOR exprlist KEYWORD_IN • testlist ':' suite for_stmt1
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 77
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    testlist    go to state 189
+
+
+State 126
+
+   78 global_stmt: KEYWORD_GLOBAL NAME global_stmt1 •
+   80 global_stmt1: global_stmt1 • ',' NAME
+
+    ','  shift, and go to state 190
+
+    $default  reduce using rule 78 (global_stmt)
+
+
+State 127
+
+   91 if_stmt: KEYWORD_IF test ':' • suite if_stmt1 if_stmt2
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 191
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 128
+
+   81 nonlocal_stmt: KEYWORD_NONLOCAL NAME nonlocal_stmt1 •
+   83 nonlocal_stmt1: nonlocal_stmt1 • ',' NAME
+
+    ','  shift, and go to state 192
+
+    $default  reduce using rule 81 (nonlocal_stmt)
+
+
+State 129
+
+   77 raise_stmt: KEYWORD_RAISE test KEYWORD_FROM • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 193
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 130
+
+  196 testlist: test testlist1 • ','
+  197         | test testlist1 •
+  199 testlist1: testlist1 • ',' test
+
+    ','  shift, and go to state 194
+
+    $default  reduce using rule 197 (testlist)
+
+
+State 131
+
+   96 while_stmt: KEYWORD_WHILE test ':' • suite while_stmt1
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 195
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 132
+
+  175 testlist_comp: test testlist_comp2 • ','
+  176              | test testlist_comp2 •
+  178 testlist_comp2: testlist_comp2 • ',' test
+
+    ','  shift, and go to state 196
+
+    $default  reduce using rule 176 (testlist_comp)
+
+
+State 133
+
+  163 atom: '(' atom1 ')' •
+
+    $default  reduce using rule 163 (atom)
+
+
+State 134
+
+  164 atom: '[' atom1 ']' •
+
+    $default  reduce using rule 164 (atom)
+
+
+State 135
+
+   35 simple_stmt: small_stmt simple_stmt2 NEWLINE •
+
+    $default  reduce using rule 35 (simple_stmt)
+
+
+State 136
+
+   34 simple_stmt: small_stmt simple_stmt2 ';' • NEWLINE
+   37 simple_stmt2: simple_stmt2 ';' • small_stmt
+
+    NEWLINE           shift, and go to state 197
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    small_stmt          go to state 198
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 137
+
+   49 annassign: ':' test • '=' test
+   50          | ':' test •
+
+    '='  shift, and go to state 199
+
+    $default  reduce using rule 50 (annassign)
+
+
+State 138
+
+   48 expr_stmt3: expr_stmt3 '=' • testlist_star_expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    testlist_star_expr  go to state 200
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 139
+
+   45 expr_stmt2: augassign testlist •
+
+    $default  reduce using rule 45 (expr_stmt2)
+
+
+State 140
+
+   52 testlist_star_expr: test testlist_star_expr1 ',' •
+   54 testlist_star_expr1: testlist_star_expr1 ',' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 52 (testlist_star_expr)
+
+    test        go to state 201
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 141
+
+  108 test1: KEYWORD_IF or_test • KEYWORD_ELSE test
+
+    KEYWORD_ELSE  shift, and go to state 202
+
+
+State 142
+
+  111 or_test1: or_test1 KEYWORD_OR • and_test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    and_test    go to state 203
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 143
+
+  114 and_test1: and_test1 KEYWORD_AND • not_test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    not_test    go to state 204
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 144
+
+  125 comp_op: OP_NOT_EQUALS •
+
+    $default  reduce using rule 125 (comp_op)
+
+
+State 145
+
+  122 comp_op: OP_EQUALS •
+
+    $default  reduce using rule 122 (comp_op)
+
+
+State 146
+
+  123 comp_op: OP_GREATER_THAN_EQUALS •
+
+    $default  reduce using rule 123 (comp_op)
+
+
+State 147
+
+  124 comp_op: OP_LESS_THAN_EQUALS •
+
+    $default  reduce using rule 124 (comp_op)
+
+
+State 148
+
+  120 comp_op: '<' •
+
+    $default  reduce using rule 120 (comp_op)
+
+
+State 149
+
+  121 comp_op: '>' •
+
+    $default  reduce using rule 121 (comp_op)
+
+
+State 150
+
+  119 comparison1: comparison1 comp_op • expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    expr        go to state 205
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 151
+
+  128 expr1: expr1 '|' • xor_expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    xor_expr    go to state 206
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 152
+
+  131 xor_expr1: xor_expr1 '^' • and_expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    and_expr    go to state 207
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 153
+
+  134 and_expr1: and_expr1 '&' • shift_expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    shift_expr  go to state 208
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 154
+
+  139 shift_expr2: OP_RIGHT_SHIFT •
+
+    $default  reduce using rule 139 (shift_expr2)
+
+
+State 155
+
+  138 shift_expr2: OP_LEFT_SHIFT •
+
+    $default  reduce using rule 138 (shift_expr2)
+
+
+State 156
+
+  137 shift_expr1: shift_expr1 shift_expr2 • arith_expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    arith_expr  go to state 209
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 157
+
+  143 arith_expr2: '+' •
+
+    $default  reduce using rule 143 (arith_expr2)
+
+
+State 158
+
+  144 arith_expr2: '-' •
+
+    $default  reduce using rule 144 (arith_expr2)
+
+
+State 159
+
+  142 arith_expr1: arith_expr1 arith_expr2 • term
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    term       go to state 210
+    factor     go to state 60
+    factor1    go to state 61
+    power      go to state 62
+    atom_expr  go to state 63
+    atom       go to state 64
+    atom2      go to state 65
+
+
+State 160
+
+  151 term2: OP_INT_DIVIDE •
+
+    $default  reduce using rule 151 (term2)
+
+
+State 161
+
+  148 term2: '*' •
+
+    $default  reduce using rule 148 (term2)
+
+
+State 162
+
+  149 term2: '/' •
+
+    $default  reduce using rule 149 (term2)
+
+
+State 163
+
+  150 term2: '%' •
+
+    $default  reduce using rule 150 (term2)
+
+
+State 164
+
+  147 term1: term1 term2 • factor
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    factor     go to state 211
+    factor1    go to state 61
+    power      go to state 62
+    atom_expr  go to state 63
+    atom       go to state 64
+    atom2      go to state 65
+
+
+State 165
+
+  159 power1: OP_POWER factor •
+
+    $default  reduce using rule 159 (power1)
+
+
+State 166
+
+  182 trailer: '.' • NAME
+
+    NAME  shift, and go to state 212
+
+
+State 167
+
+  179 trailer: '(' • arglist ')'
+  180        | '(' • ')'
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    OP_POWER       shift, and go to state 174
+    '('            shift, and go to state 25
+    ')'            shift, and go to state 213
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '*'            shift, and go to state 176
+    '~'            shift, and go to state 29
+
+    test        go to state 177
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    arglist     go to state 214
+    argument    go to state 179
+
+
+State 168
+
+  181 trailer: '[' • subscriptlist ']'
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    ':'            shift, and go to state 215
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test           go to state 216
+    or_test        go to state 50
+    and_test       go to state 51
+    not_test       go to state 52
+    comparison     go to state 53
+    expr           go to state 54
+    xor_expr       go to state 55
+    and_expr       go to state 56
+    shift_expr     go to state 57
+    arith_expr     go to state 58
+    term           go to state 59
+    factor         go to state 60
+    factor1        go to state 61
+    power          go to state 62
+    atom_expr      go to state 63
+    atom           go to state 64
+    atom2          go to state 65
+    subscriptlist  go to state 217
+    subscript      go to state 218
+
+
+State 169
+
+  162 atom_expr1: atom_expr1 trailer •
+
+    $default  reduce using rule 162 (atom_expr1)
+
+
+State 170
+
+   85 assert_stmt: KEYWORD_ASSERT test ',' test •
+
+    $default  reduce using rule 85 (assert_stmt)
+
+
+State 171
+
+  103 suite: NEWLINE • INDENT suite1 DEDENT
+
+    INDENT  shift, and go to state 219
+
+
+State 172
+
+  102 suite: simple_stmt •
+
+    $default  reduce using rule 102 (suite)
+
+
+State 173
+
+  201 classdef: KEYWORD_CLASS NAME ':' suite •
+
+    $default  reduce using rule 201 (classdef)
+
+
+State 174
+
+  210 argument: OP_POWER • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 220
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 175
+
+  202 classdef: KEYWORD_CLASS NAME '(' ')' • ':' suite
+
+    ':'  shift, and go to state 221
+
+
+State 176
+
+  209 argument: '*' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 222
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 177
+
+  207 argument: test •
+  208         | test • '=' test
+
+    '='  shift, and go to state 223
+
+    $default  reduce using rule 207 (argument)
+
+
+State 178
+
+  200 classdef: KEYWORD_CLASS NAME '(' arglist • ')' ':' suite
+
+    ')'  shift, and go to state 224
+
+
+State 179
+
+  203 arglist: argument • arglist1 ','
+  204        | argument • arglist1
+
+    $default  reduce using rule 205 (arglist1)
+
+    arglist1  go to state 225
+
+
+State 180
+
+   30 tfpdef: NAME • ':' test
+   31       | NAME •
+
+    ':'  shift, and go to state 226
+
+    $default  reduce using rule 31 (tfpdef)
+
+
+State 181
+
+   13 typedargslist: OP_POWER • tfpdef
+   14              | OP_POWER • tfpdef ','
+
+    NAME  shift, and go to state 180
+
+    tfpdef  go to state 227
+
+
+State 182
+
+    8 parameters: '(' ')' •
+
+    $default  reduce using rule 8 (parameters)
+
+
+State 183
+
+   11 typedargslist: '*' • tfpdef typedargslist2 typedargslist5
+   12              | '*' • typedargslist2 typedargslist5
+
+    NAME  shift, and go to state 180
+
+    $default  reduce using rule 17 (typedargslist2)
+
+    typedargslist2  go to state 228
+    tfpdef          go to state 229
+
+
+State 184
+
+    9 parameters: '(' typedargslist • ')'
+
+    ')'  shift, and go to state 230
+
+
+State 185
+
+   10 typedargslist: tfpdef • typedargslist1 typedargslist2 typedargslist3
+
+    '='  shift, and go to state 231
+
+    $default  reduce using rule 15 (typedargslist1)
+
+    typedargslist1  go to state 232
+
+
+State 186
+
+    7 funcdef: KEYWORD_DEF NAME parameters OP_ARROW • test ':' suite
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 233
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 187
+
+    6 funcdef: KEYWORD_DEF NAME parameters ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 234
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 188
+
+  193 exprlist: expr exprlist2 ',' •
+  195 exprlist2: exprlist2 ',' • expr
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 193 (exprlist)
+
+    expr        go to state 235
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 189
+
+   99 for_stmt: KEYWORD_FOR exprlist KEYWORD_IN testlist • ':' suite for_stmt1
+
+    ':'  shift, and go to state 236
+
+
+State 190
+
+   80 global_stmt1: global_stmt1 ',' • NAME
+
+    NAME  shift, and go to state 237
+
+
+State 191
+
+   91 if_stmt: KEYWORD_IF test ':' suite • if_stmt1 if_stmt2
+
+    $default  reduce using rule 92 (if_stmt1)
+
+    if_stmt1  go to state 238
+
+
+State 192
+
+   83 nonlocal_stmt1: nonlocal_stmt1 ',' • NAME
+
+    NAME  shift, and go to state 239
+
+
+State 193
+
+   77 raise_stmt: KEYWORD_RAISE test KEYWORD_FROM test •
+
+    $default  reduce using rule 77 (raise_stmt)
+
+
+State 194
+
+  196 testlist: test testlist1 ',' •
+  199 testlist1: testlist1 ',' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 196 (testlist)
+
+    test        go to state 240
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 195
+
+   96 while_stmt: KEYWORD_WHILE test ':' suite • while_stmt1
+
+    KEYWORD_ELSE  shift, and go to state 241
+
+    $default  reduce using rule 97 (while_stmt1)
+
+    while_stmt1  go to state 242
+
+
+State 196
+
+  175 testlist_comp: test testlist_comp2 ',' •
+  178 testlist_comp2: testlist_comp2 ',' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 175 (testlist_comp)
+
+    test        go to state 243
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 197
+
+   34 simple_stmt: small_stmt simple_stmt2 ';' NEWLINE •
+
+    $default  reduce using rule 34 (simple_stmt)
+
+
+State 198
+
+   37 simple_stmt2: simple_stmt2 ';' small_stmt •
+
+    $default  reduce using rule 37 (simple_stmt2)
+
+
+State 199
+
+   49 annassign: ':' test '=' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 244
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 200
+
+   48 expr_stmt3: expr_stmt3 '=' testlist_star_expr •
+
+    $default  reduce using rule 48 (expr_stmt3)
+
+
+State 201
+
+   54 testlist_star_expr1: testlist_star_expr1 ',' test •
+
+    $default  reduce using rule 54 (testlist_star_expr1)
+
+
+State 202
+
+  108 test1: KEYWORD_IF or_test KEYWORD_ELSE • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 245
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 203
+
+  111 or_test1: or_test1 KEYWORD_OR and_test •
+
+    $default  reduce using rule 111 (or_test1)
+
+
+State 204
+
+  114 and_test1: and_test1 KEYWORD_AND not_test •
+
+    $default  reduce using rule 114 (and_test1)
+
+
+State 205
+
+  119 comparison1: comparison1 comp_op expr •
+
+    $default  reduce using rule 119 (comparison1)
+
+
+State 206
+
+  128 expr1: expr1 '|' xor_expr •
+
+    $default  reduce using rule 128 (expr1)
+
+
+State 207
+
+  131 xor_expr1: xor_expr1 '^' and_expr •
+
+    $default  reduce using rule 131 (xor_expr1)
+
+
+State 208
+
+  134 and_expr1: and_expr1 '&' shift_expr •
+
+    $default  reduce using rule 134 (and_expr1)
+
+
+State 209
+
+  137 shift_expr1: shift_expr1 shift_expr2 arith_expr •
+
+    $default  reduce using rule 137 (shift_expr1)
+
+
+State 210
+
+  142 arith_expr1: arith_expr1 arith_expr2 term •
+
+    $default  reduce using rule 142 (arith_expr1)
+
+
+State 211
+
+  147 term1: term1 term2 factor •
+
+    $default  reduce using rule 147 (term1)
+
+
+State 212
+
+  182 trailer: '.' NAME •
+
+    $default  reduce using rule 182 (trailer)
+
+
+State 213
+
+  180 trailer: '(' ')' •
+
+    $default  reduce using rule 180 (trailer)
+
+
+State 214
+
+  179 trailer: '(' arglist • ')'
+
+    ')'  shift, and go to state 246
+
+
+State 215
+
+  190 subscript: ':' • test
+  191          | ':' •
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 191 (subscript)
+
+    test        go to state 247
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 216
+
+  187 subscript: test •
+  188          | test • ':' test
+  189          | test • ':'
+
+    ':'  shift, and go to state 248
+
+    $default  reduce using rule 187 (subscript)
+
+
+State 217
+
+  181 trailer: '[' subscriptlist • ']'
+
+    ']'  shift, and go to state 249
+
+
+State 218
+
+  183 subscriptlist: subscript • subscriptlist2
+  184              | subscript • subscriptlist2 ','
+
+    $default  reduce using rule 185 (subscriptlist2)
+
+    subscriptlist2  go to state 250
+
+
+State 219
+
+  103 suite: NEWLINE INDENT • suite1 DEDENT
+
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CLASS     shift, and go to state 14
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_DEF       shift, and go to state 16
+    KEYWORD_FOR       shift, and go to state 17
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_IF        shift, and go to state 19
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    KEYWORD_WHILE     shift, and go to state 24
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    funcdef             go to state 31
+    stmt                go to state 251
+    simple_stmt         go to state 33
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    compound_stmt       go to state 45
+    if_stmt             go to state 46
+    while_stmt          go to state 47
+    for_stmt            go to state 48
+    suite1              go to state 252
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+    classdef            go to state 66
+
+
+State 220
+
+  210 argument: OP_POWER test •
+
+    $default  reduce using rule 210 (argument)
+
+
+State 221
+
+  202 classdef: KEYWORD_CLASS NAME '(' ')' ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 253
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 222
+
+  209 argument: '*' test •
+
+    $default  reduce using rule 209 (argument)
+
+
+State 223
+
+  208 argument: test '=' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 254
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 224
+
+  200 classdef: KEYWORD_CLASS NAME '(' arglist ')' • ':' suite
+
+    ':'  shift, and go to state 255
+
+
+State 225
+
+  203 arglist: argument arglist1 • ','
+  204        | argument arglist1 •
+  206 arglist1: arglist1 • ',' argument
+
+    ','  shift, and go to state 256
+
+    $default  reduce using rule 204 (arglist)
+
+
+State 226
+
+   30 tfpdef: NAME ':' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 257
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 227
+
+   13 typedargslist: OP_POWER tfpdef •
+   14              | OP_POWER tfpdef • ','
+
+    ','  shift, and go to state 258
+
+    $default  reduce using rule 13 (typedargslist)
+
+
+State 228
+
+   12 typedargslist: '*' typedargslist2 • typedargslist5
+   18 typedargslist2: typedargslist2 • ',' tfpdef typedargslist1
+
+    ','  shift, and go to state 259
+
+    $default  reduce using rule 26 (typedargslist5)
+
+    typedargslist5  go to state 260
+
+
+State 229
+
+   11 typedargslist: '*' tfpdef • typedargslist2 typedargslist5
+
+    $default  reduce using rule 17 (typedargslist2)
+
+    typedargslist2  go to state 261
+
+
+State 230
+
+    9 parameters: '(' typedargslist ')' •
+
+    $default  reduce using rule 9 (parameters)
+
+
+State 231
+
+   16 typedargslist1: '=' • test
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 262
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 232
+
+   10 typedargslist: tfpdef typedargslist1 • typedargslist2 typedargslist3
+
+    $default  reduce using rule 17 (typedargslist2)
+
+    typedargslist2  go to state 263
+
+
+State 233
+
+    7 funcdef: KEYWORD_DEF NAME parameters OP_ARROW test • ':' suite
+
+    ':'  shift, and go to state 264
+
+
+State 234
+
+    6 funcdef: KEYWORD_DEF NAME parameters ':' suite •
+
+    $default  reduce using rule 6 (funcdef)
+
+
+State 235
+
+  195 exprlist2: exprlist2 ',' expr •
+
+    $default  reduce using rule 195 (exprlist2)
+
+
+State 236
+
+   99 for_stmt: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' • suite for_stmt1
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 265
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 237
+
+   80 global_stmt1: global_stmt1 ',' NAME •
+
+    $default  reduce using rule 80 (global_stmt1)
+
+
+State 238
+
+   91 if_stmt: KEYWORD_IF test ':' suite if_stmt1 • if_stmt2
+   93 if_stmt1: if_stmt1 • KEYWORD_ELIF test ':' suite
+
+    KEYWORD_ELIF  shift, and go to state 266
+    KEYWORD_ELSE  shift, and go to state 267
+
+    $default  reduce using rule 94 (if_stmt2)
+
+    if_stmt2  go to state 268
+
+
+State 239
+
+   83 nonlocal_stmt1: nonlocal_stmt1 ',' NAME •
+
+    $default  reduce using rule 83 (nonlocal_stmt1)
+
+
+State 240
+
+  199 testlist1: testlist1 ',' test •
+
+    $default  reduce using rule 199 (testlist1)
+
+
+State 241
+
+   98 while_stmt1: KEYWORD_ELSE • ':' suite
+
+    ':'  shift, and go to state 269
+
+
+State 242
+
+   96 while_stmt: KEYWORD_WHILE test ':' suite while_stmt1 •
+
+    $default  reduce using rule 96 (while_stmt)
+
+
+State 243
+
+  178 testlist_comp2: testlist_comp2 ',' test •
+
+    $default  reduce using rule 178 (testlist_comp2)
+
+
+State 244
+
+   49 annassign: ':' test '=' test •
+
+    $default  reduce using rule 49 (annassign)
+
+
+State 245
+
+  108 test1: KEYWORD_IF or_test KEYWORD_ELSE test •
+
+    $default  reduce using rule 108 (test1)
+
+
+State 246
+
+  179 trailer: '(' arglist ')' •
+
+    $default  reduce using rule 179 (trailer)
+
+
+State 247
+
+  190 subscript: ':' test •
+
+    $default  reduce using rule 190 (subscript)
+
+
+State 248
+
+  188 subscript: test ':' • test
+  189          | test ':' •
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 189 (subscript)
+
+    test        go to state 270
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 249
+
+  181 trailer: '[' subscriptlist ']' •
+
+    $default  reduce using rule 181 (trailer)
+
+
+State 250
+
+  183 subscriptlist: subscript subscriptlist2 •
+  184              | subscript subscriptlist2 • ','
+  186 subscriptlist2: subscriptlist2 • ',' subscript
+
+    ','  shift, and go to state 271
+
+    $default  reduce using rule 183 (subscriptlist)
+
+
+State 251
+
+  104 suite1: stmt •
+
+    $default  reduce using rule 104 (suite1)
+
+
+State 252
+
+  103 suite: NEWLINE INDENT suite1 • DEDENT
+  105 suite1: suite1 • stmt
+
+    NAME              shift, and go to state 6
+    DEDENT            shift, and go to state 272
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CLASS     shift, and go to state 14
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_DEF       shift, and go to state 16
+    KEYWORD_FOR       shift, and go to state 17
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_IF        shift, and go to state 19
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    KEYWORD_WHILE     shift, and go to state 24
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    funcdef             go to state 31
+    stmt                go to state 273
+    simple_stmt         go to state 33
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    compound_stmt       go to state 45
+    if_stmt             go to state 46
+    while_stmt          go to state 47
+    for_stmt            go to state 48
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+    classdef            go to state 66
+
+
+State 253
+
+  202 classdef: KEYWORD_CLASS NAME '(' ')' ':' suite •
+
+    $default  reduce using rule 202 (classdef)
+
+
+State 254
+
+  208 argument: test '=' test •
+
+    $default  reduce using rule 208 (argument)
+
+
+State 255
+
+  200 classdef: KEYWORD_CLASS NAME '(' arglist ')' ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 274
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 256
+
+  203 arglist: argument arglist1 ',' •
+  206 arglist1: arglist1 ',' • argument
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    OP_POWER       shift, and go to state 174
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '*'            shift, and go to state 176
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 203 (arglist)
+
+    test        go to state 177
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    argument    go to state 275
+
+
+State 257
+
+   30 tfpdef: NAME ':' test •
+
+    $default  reduce using rule 30 (tfpdef)
+
+
+State 258
+
+   14 typedargslist: OP_POWER tfpdef ',' •
+
+    $default  reduce using rule 14 (typedargslist)
+
+
+State 259
+
+   18 typedargslist2: typedargslist2 ',' • tfpdef typedargslist1
+   27 typedargslist5: ',' •
+   28               | ',' • OP_POWER tfpdef
+   29               | ',' • OP_POWER tfpdef ','
+
+    NAME      shift, and go to state 180
+    OP_POWER  shift, and go to state 276
+
+    $default  reduce using rule 27 (typedargslist5)
+
+    tfpdef  go to state 277
+
+
+State 260
+
+   12 typedargslist: '*' typedargslist2 typedargslist5 •
+
+    $default  reduce using rule 12 (typedargslist)
+
+
+State 261
+
+   11 typedargslist: '*' tfpdef typedargslist2 • typedargslist5
+   18 typedargslist2: typedargslist2 • ',' tfpdef typedargslist1
+
+    ','  shift, and go to state 259
+
+    $default  reduce using rule 26 (typedargslist5)
+
+    typedargslist5  go to state 278
+
+
+State 262
+
+   16 typedargslist1: '=' test •
+
+    $default  reduce using rule 16 (typedargslist1)
+
+
+State 263
+
+   10 typedargslist: tfpdef typedargslist1 typedargslist2 • typedargslist3
+   18 typedargslist2: typedargslist2 • ',' tfpdef typedargslist1
+
+    ','  shift, and go to state 279
+
+    $default  reduce using rule 19 (typedargslist3)
+
+    typedargslist3  go to state 280
+
+
+State 264
+
+    7 funcdef: KEYWORD_DEF NAME parameters OP_ARROW test ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 281
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 265
+
+   99 for_stmt: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite • for_stmt1
+
+    KEYWORD_ELSE  shift, and go to state 282
+
+    $default  reduce using rule 100 (for_stmt1)
+
+    for_stmt1  go to state 283
+
+
+State 266
+
+   93 if_stmt1: if_stmt1 KEYWORD_ELIF • test ':' suite
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    test        go to state 284
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+
+
+State 267
+
+   95 if_stmt2: KEYWORD_ELSE • ':' suite
+
+    ':'  shift, and go to state 285
+
+
+State 268
+
+   91 if_stmt: KEYWORD_IF test ':' suite if_stmt1 if_stmt2 •
+
+    $default  reduce using rule 91 (if_stmt)
+
+
+State 269
+
+   98 while_stmt1: KEYWORD_ELSE ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 286
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 270
+
+  188 subscript: test ':' test •
+
+    $default  reduce using rule 188 (subscript)
+
+
+State 271
+
+  184 subscriptlist: subscript subscriptlist2 ',' •
+  186 subscriptlist2: subscriptlist2 ',' • subscript
+
+    NAME           shift, and go to state 6
+    NUMBER         shift, and go to state 7
+    STRING         shift, and go to state 8
+    KEYWORD_FALSE  shift, and go to state 9
+    KEYWORD_NONE   shift, and go to state 10
+    KEYWORD_TRUE   shift, and go to state 11
+    KEYWORD_NOT    shift, and go to state 21
+    ':'            shift, and go to state 215
+    '('            shift, and go to state 25
+    '['            shift, and go to state 26
+    '+'            shift, and go to state 27
+    '-'            shift, and go to state 28
+    '~'            shift, and go to state 29
+
+    $default  reduce using rule 184 (subscriptlist)
+
+    test        go to state 216
+    or_test     go to state 50
+    and_test    go to state 51
+    not_test    go to state 52
+    comparison  go to state 53
+    expr        go to state 54
+    xor_expr    go to state 55
+    and_expr    go to state 56
+    shift_expr  go to state 57
+    arith_expr  go to state 58
+    term        go to state 59
+    factor      go to state 60
+    factor1     go to state 61
+    power       go to state 62
+    atom_expr   go to state 63
+    atom        go to state 64
+    atom2       go to state 65
+    subscript   go to state 287
+
+
+State 272
+
+  103 suite: NEWLINE INDENT suite1 DEDENT •
+
+    $default  reduce using rule 103 (suite)
+
+
+State 273
+
+  105 suite1: suite1 stmt •
+
+    $default  reduce using rule 105 (suite1)
+
+
+State 274
+
+  200 classdef: KEYWORD_CLASS NAME '(' arglist ')' ':' suite •
+
+    $default  reduce using rule 200 (classdef)
+
+
+State 275
+
+  206 arglist1: arglist1 ',' argument •
+
+    $default  reduce using rule 206 (arglist1)
+
+
+State 276
+
+   28 typedargslist5: ',' OP_POWER • tfpdef
+   29               | ',' OP_POWER • tfpdef ','
+
+    NAME  shift, and go to state 180
+
+    tfpdef  go to state 288
+
+
+State 277
+
+   18 typedargslist2: typedargslist2 ',' tfpdef • typedargslist1
+
+    '='  shift, and go to state 231
+
+    $default  reduce using rule 15 (typedargslist1)
+
+    typedargslist1  go to state 289
+
+
+State 278
+
+   11 typedargslist: '*' tfpdef typedargslist2 typedargslist5 •
+
+    $default  reduce using rule 11 (typedargslist)
+
+
+State 279
+
+   18 typedargslist2: typedargslist2 ',' • tfpdef typedargslist1
+   20 typedargslist3: ',' • typedargslist4
+
+    NAME      shift, and go to state 180
+    OP_POWER  shift, and go to state 290
+    '*'       shift, and go to state 291
+
+    $default  reduce using rule 21 (typedargslist4)
+
+    typedargslist4  go to state 292
+    tfpdef          go to state 277
+
+
+State 280
+
+   10 typedargslist: tfpdef typedargslist1 typedargslist2 typedargslist3 •
+
+    $default  reduce using rule 10 (typedargslist)
+
+
+State 281
+
+    7 funcdef: KEYWORD_DEF NAME parameters OP_ARROW test ':' suite •
+
+    $default  reduce using rule 7 (funcdef)
+
+
+State 282
+
+  101 for_stmt1: KEYWORD_ELSE • ':' suite
+
+    ':'  shift, and go to state 293
+
+
+State 283
+
+   99 for_stmt: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite for_stmt1 •
+
+    $default  reduce using rule 99 (for_stmt)
+
+
+State 284
+
+   93 if_stmt1: if_stmt1 KEYWORD_ELIF test • ':' suite
+
+    ':'  shift, and go to state 294
+
+
+State 285
+
+   95 if_stmt2: KEYWORD_ELSE ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 295
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 286
+
+   98 while_stmt1: KEYWORD_ELSE ':' suite •
+
+    $default  reduce using rule 98 (while_stmt1)
+
+
+State 287
+
+  186 subscriptlist2: subscriptlist2 ',' subscript •
+
+    $default  reduce using rule 186 (subscriptlist2)
+
+
+State 288
+
+   28 typedargslist5: ',' OP_POWER tfpdef •
+   29               | ',' OP_POWER tfpdef • ','
+
+    ','  shift, and go to state 296
+
+    $default  reduce using rule 28 (typedargslist5)
+
+
+State 289
+
+   18 typedargslist2: typedargslist2 ',' tfpdef typedargslist1 •
+
+    $default  reduce using rule 18 (typedargslist2)
+
+
+State 290
+
+   24 typedargslist4: OP_POWER • tfpdef
+   25               | OP_POWER • tfpdef ','
+
+    NAME  shift, and go to state 180
+
+    tfpdef  go to state 297
+
+
+State 291
+
+   22 typedargslist4: '*' • tfpdef typedargslist2 typedargslist5
+   23               | '*' • typedargslist2 typedargslist5
+
+    NAME  shift, and go to state 180
+
+    $default  reduce using rule 17 (typedargslist2)
+
+    typedargslist2  go to state 298
+    tfpdef          go to state 299
+
+
+State 292
+
+   20 typedargslist3: ',' typedargslist4 •
+
+    $default  reduce using rule 20 (typedargslist3)
+
+
+State 293
+
+  101 for_stmt1: KEYWORD_ELSE ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 300
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 294
+
+   93 if_stmt1: if_stmt1 KEYWORD_ELIF test ':' • suite
+
+    NEWLINE           shift, and go to state 171
+    NAME              shift, and go to state 6
+    NUMBER            shift, and go to state 7
+    STRING            shift, and go to state 8
+    KEYWORD_FALSE     shift, and go to state 9
+    KEYWORD_NONE      shift, and go to state 10
+    KEYWORD_TRUE      shift, and go to state 11
+    KEYWORD_ASSERT    shift, and go to state 12
+    KEYWORD_BREAK     shift, and go to state 13
+    KEYWORD_CONTINUE  shift, and go to state 15
+    KEYWORD_GLOBAL    shift, and go to state 18
+    KEYWORD_NONLOCAL  shift, and go to state 20
+    KEYWORD_NOT       shift, and go to state 21
+    KEYWORD_RAISE     shift, and go to state 22
+    KEYWORD_RETURN    shift, and go to state 23
+    '('               shift, and go to state 25
+    '['               shift, and go to state 26
+    '+'               shift, and go to state 27
+    '-'               shift, and go to state 28
+    '~'               shift, and go to state 29
+
+    simple_stmt         go to state 172
+    small_stmt          go to state 34
+    expr_stmt           go to state 35
+    testlist_star_expr  go to state 36
+    flow_stmt           go to state 37
+    break_stmt          go to state 38
+    continue_stmt       go to state 39
+    return_stmt         go to state 40
+    raise_stmt          go to state 41
+    global_stmt         go to state 42
+    nonlocal_stmt       go to state 43
+    assert_stmt         go to state 44
+    suite               go to state 301
+    test                go to state 49
+    or_test             go to state 50
+    and_test            go to state 51
+    not_test            go to state 52
+    comparison          go to state 53
+    expr                go to state 54
+    xor_expr            go to state 55
+    and_expr            go to state 56
+    shift_expr          go to state 57
+    arith_expr          go to state 58
+    term                go to state 59
+    factor              go to state 60
+    factor1             go to state 61
+    power               go to state 62
+    atom_expr           go to state 63
+    atom                go to state 64
+    atom2               go to state 65
+
+
+State 295
+
+   95 if_stmt2: KEYWORD_ELSE ':' suite •
+
+    $default  reduce using rule 95 (if_stmt2)
+
+
+State 296
+
+   29 typedargslist5: ',' OP_POWER tfpdef ',' •
+
+    $default  reduce using rule 29 (typedargslist5)
+
+
+State 297
+
+   24 typedargslist4: OP_POWER tfpdef •
+   25               | OP_POWER tfpdef • ','
+
+    ','  shift, and go to state 302
+
+    $default  reduce using rule 24 (typedargslist4)
+
+
+State 298
+
+   18 typedargslist2: typedargslist2 • ',' tfpdef typedargslist1
+   23 typedargslist4: '*' typedargslist2 • typedargslist5
+
+    ','  shift, and go to state 259
+
+    $default  reduce using rule 26 (typedargslist5)
+
+    typedargslist5  go to state 303
+
+
+State 299
+
+   22 typedargslist4: '*' tfpdef • typedargslist2 typedargslist5
+
+    $default  reduce using rule 17 (typedargslist2)
+
+    typedargslist2  go to state 304
+
+
+State 300
+
+  101 for_stmt1: KEYWORD_ELSE ':' suite •
+
+    $default  reduce using rule 101 (for_stmt1)
+
+
+State 301
+
+   93 if_stmt1: if_stmt1 KEYWORD_ELIF test ':' suite •
+
+    $default  reduce using rule 93 (if_stmt1)
+
+
+State 302
+
+   25 typedargslist4: OP_POWER tfpdef ',' •
+
+    $default  reduce using rule 25 (typedargslist4)
+
+
+State 303
+
+   23 typedargslist4: '*' typedargslist2 typedargslist5 •
+
+    $default  reduce using rule 23 (typedargslist4)
+
+
+State 304
+
+   18 typedargslist2: typedargslist2 • ',' tfpdef typedargslist1
+   22 typedargslist4: '*' tfpdef typedargslist2 • typedargslist5
+
+    ','  shift, and go to state 259
+
+    $default  reduce using rule 26 (typedargslist5)
+
+    typedargslist5  go to state 305
+
+
+State 305
+
+   22 typedargslist4: '*' tfpdef typedargslist2 typedargslist5 •
+
+    $default  reduce using rule 22 (typedargslist4)

@@ -1,0 +1,763 @@
+digraph ParseTree {
+"0x588ff08eded0"[label="file_input1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08eded0" -> "0x588ff08ec2b0";
+"0x588ff08ec2b0"[label="file_input1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ec2b0" -> "0x588ff08de7e0";
+"0x588ff08de7e0"[label="funcdef" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08de7e0" -> "0x588ff08de550";
+"0x588ff08de550"[label="KEYWORD (def)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de7e0" -> "0x588ff08de610";
+"0x588ff08de610"[label="NAME (bubbleSort)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de7e0" -> "0x588ff08c92b0";
+"0x588ff08c92b0"[label="parameters" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08c92b0" -> "0x588ff08c91f0";
+"0x588ff08c91f0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c92b0" -> "0x588ff08c9130";
+"0x588ff08c9130"[label="parameters1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08c9130" -> "0x588ff08c8f40";
+"0x588ff08c8f40"[label="tfpdef" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08c8f40" -> "0x588ff08c8cc0";
+"0x588ff08c8cc0"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c8f40" -> "0x588ff08c8be0";
+"0x588ff08c8be0"[label="tfpdef1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08c8be0" -> "0x588ff08c8b20";
+"0x588ff08c8b20"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c8be0" -> "0x588ff08c8a40";
+"0x588ff08c8a40"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08c8a40" -> "0x588ff08c7c90";
+"0x588ff08c7c90"[label="NAME (list)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c8a40" -> "0x588ff08c86c0";
+"0x588ff08c86c0"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08c86c0" -> "0x588ff08c8450";
+"0x588ff08c8450"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c86c0" -> "0x588ff08c8370";
+"0x588ff08c8370"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c86c0" -> "0x588ff08c8510";
+"0x588ff08c8510"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08c9130" -> "0x588ff08c9070";
+"0x588ff08c9070"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de7e0" -> "0x588ff08de460";
+"0x588ff08de460"[label="funcdef1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08de460" -> "0x588ff08de2e0";
+"0x588ff08de2e0"[label="OPERATOR (->)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de460" -> "0x588ff08c9750";
+"0x588ff08c9750"[label="KEYWORD (None)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de460" -> "0x588ff08de3a0";
+"0x588ff08de3a0"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de460" -> "0x588ff08de200";
+"0x588ff08de200"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08de200" -> "0x588ff08cce30";
+"0x588ff08cce30"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cce30" -> "0x588ff08caf60";
+"0x588ff08caf60"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08caf60" -> "0x588ff08ca7f0";
+"0x588ff08ca7f0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ca7f0" -> "0x588ff08c9cf0";
+"0x588ff08c9cf0"[label="NAME (i)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ca7f0" -> "0x588ff08ca1d0";
+"0x588ff08ca1d0"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08caf60" -> "0x588ff08ca650";
+"0x588ff08ca650"[label="INT (0)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cce30" -> "0x588ff08ccd00";
+"0x588ff08ccd00"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ccd00" -> "0x588ff08cc9a0";
+"0x588ff08cc9a0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cc9a0" -> "0x588ff08cb4f0";
+"0x588ff08cb4f0"[label="NAME (l)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cc9a0" -> "0x588ff08cb9d0";
+"0x588ff08cb9d0"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ccd00" -> "0x588ff08cc800";
+"0x588ff08cc800"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cc800" -> "0x588ff08cbab0";
+"0x588ff08cbab0"[label="NAME (len)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cc800" -> "0x588ff08cc460";
+"0x588ff08cc460"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cc460" -> "0x588ff08cc2c0";
+"0x588ff08cc2c0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cc460" -> "0x588ff08cc200";
+"0x588ff08cc200"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cc200" -> "0x588ff08cc030";
+"0x588ff08cc030"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cc200" -> "0x588ff08cc140";
+"0x588ff08cc140"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08de200" -> "0x588ff08ddda0";
+"0x588ff08ddda0"[label="for_stmt" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ddda0" -> "0x588ff08ddb60";
+"0x588ff08ddb60"[label="KEYWORD (for)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ddda0" -> "0x588ff08cd0f0";
+"0x588ff08cd0f0"[label="NAME (i)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ddda0" -> "0x588ff08ddc20";
+"0x588ff08ddc20"[label="KEYWORD (in)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ddda0" -> "0x588ff08ce010";
+"0x588ff08ce010"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ce010" -> "0x588ff08cd200";
+"0x588ff08cd200"[label="NAME (range)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ce010" -> "0x588ff08cdb90";
+"0x588ff08cdb90"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cdb90" -> "0x588ff08cd9f0";
+"0x588ff08cd9f0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cdb90" -> "0x588ff08cd930";
+"0x588ff08cd930"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cd930" -> "0x588ff08cd760";
+"0x588ff08cd760"[label="NAME (l)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cd930" -> "0x588ff08cd870";
+"0x588ff08cd870"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ddda0" -> "0x588ff08ddce0";
+"0x588ff08ddce0"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ddda0" -> "0x588ff08dda80";
+"0x588ff08dda80"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dda80" -> "0x588ff08d2390";
+"0x588ff08d2390"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d2390" -> "0x588ff08d0940";
+"0x588ff08d0940"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d0940" -> "0x588ff08cf420";
+"0x588ff08cf420"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cf420" -> "0x588ff08cf0c0";
+"0x588ff08cf0c0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08cf0c0" -> "0x588ff08ce5c0";
+"0x588ff08ce5c0"[label="NAME (swapped)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cf0c0" -> "0x588ff08ceaa0";
+"0x588ff08ceaa0"[label="NAME (bool)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08cf420" -> "0x588ff08cef20";
+"0x588ff08cef20"[label="KEYWORD (False)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d0940" -> "0x588ff08d0810";
+"0x588ff08d0810"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d0810" -> "0x588ff08d04b0";
+"0x588ff08d04b0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d04b0" -> "0x588ff08cf9b0";
+"0x588ff08cf9b0"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d04b0" -> "0x588ff08cfe90";
+"0x588ff08cfe90"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d0810" -> "0x588ff08d0310";
+"0x588ff08d0310"[label="INT (0)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d2390" -> "0x588ff08d2260";
+"0x588ff08d2260"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d2260" -> "0x588ff08d1f00";
+"0x588ff08d1f00"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d1f00" -> "0x588ff08d0e80";
+"0x588ff08d0e80"[label="NAME (m)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d1f00" -> "0x588ff08d1360";
+"0x588ff08d1360"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d2260" -> "0x588ff08d1d60";
+"0x588ff08d1d60"[label="OPERATOR (-)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d1d60" -> "0x588ff08d1620";
+"0x588ff08d1620"[label="OPERATOR (-)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d1620" -> "0x588ff08d1520";
+"0x588ff08d1520"[label="NAME (l)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d1620" -> "0x588ff08d17e0";
+"0x588ff08d17e0"[label="NAME (i)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d1d60" -> "0x588ff08d1aa0";
+"0x588ff08d1aa0"[label="INT (1)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dda80" -> "0x588ff08dd620";
+"0x588ff08dd620"[label="for_stmt" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dd620" -> "0x588ff08dd3e0";
+"0x588ff08dd3e0"[label="KEYWORD (for)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd620" -> "0x588ff08d2650";
+"0x588ff08d2650"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd620" -> "0x588ff08dd4a0";
+"0x588ff08dd4a0"[label="KEYWORD (in)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd620" -> "0x588ff08d3ba0";
+"0x588ff08d3ba0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d3ba0" -> "0x588ff08d2760";
+"0x588ff08d2760"[label="NAME (range)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d3ba0" -> "0x588ff08d3720";
+"0x588ff08d3720"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d3720" -> "0x588ff08d3580";
+"0x588ff08d3580"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d3720" -> "0x588ff08d34c0";
+"0x588ff08d34c0"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d34c0" -> "0x588ff08d3310";
+"0x588ff08d3310"[label="arglist" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d3310" -> "0x588ff08d2be0";
+"0x588ff08d2be0"[label="INT (0)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d3310" -> "0x588ff08d3200";
+"0x588ff08d3200"[label="arglist1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d3200" -> "0x588ff08d3140";
+"0x588ff08d3140"[label="DELIMITER (,)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d3200" -> "0x588ff08d3060";
+"0x588ff08d3060"[label="NAME (m)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d34c0" -> "0x588ff08d3400";
+"0x588ff08d3400"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd620" -> "0x588ff08dd560";
+"0x588ff08dd560"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd620" -> "0x588ff08dd320";
+"0x588ff08dd320"[label="if_stmt" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dd320" -> "0x588ff08dce00";
+"0x588ff08dce00"[label="KEYWORD (if)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd320" -> "0x588ff08d5990";
+"0x588ff08d5990"[label="OPERATOR (>)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d5990" -> "0x588ff08d4790";
+"0x588ff08d4790"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d4790" -> "0x588ff08d3cf0";
+"0x588ff08d3cf0"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d4790" -> "0x588ff08d46d0";
+"0x588ff08d46d0"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d46d0" -> "0x588ff08d4460";
+"0x588ff08d4460"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d46d0" -> "0x588ff08d4350";
+"0x588ff08d4350"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d46d0" -> "0x588ff08d4520";
+"0x588ff08d4520"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d5990" -> "0x588ff08d56d0";
+"0x588ff08d56d0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d56d0" -> "0x588ff08d4970";
+"0x588ff08d4970"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d56d0" -> "0x588ff08d5610";
+"0x588ff08d5610"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d5610" -> "0x588ff08d53a0";
+"0x588ff08d53a0"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d5610" -> "0x588ff08d5290";
+"0x588ff08d5290"[label="OPERATOR (+)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d5290" -> "0x588ff08d4b50";
+"0x588ff08d4b50"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d5290" -> "0x588ff08d4e10";
+"0x588ff08d4e10"[label="INT (1)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d5610" -> "0x588ff08d5460";
+"0x588ff08d5460"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd320" -> "0x588ff08dcec0";
+"0x588ff08dcec0"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dd320" -> "0x588ff08dccd0";
+"0x588ff08dccd0"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dccd0" -> "0x588ff08dba00";
+"0x588ff08dba00"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dba00" -> "0x588ff08d9db0";
+"0x588ff08d9db0"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d9db0" -> "0x588ff08d7750";
+"0x588ff08d7750"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d7750" -> "0x588ff08d73f0";
+"0x588ff08d73f0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d73f0" -> "0x588ff08d5f30";
+"0x588ff08d5f30"[label="NAME (temp)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d73f0" -> "0x588ff08d6410";
+"0x588ff08d6410"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d7750" -> "0x588ff08d7250";
+"0x588ff08d7250"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d7250" -> "0x588ff08d64f0";
+"0x588ff08d64f0"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d7250" -> "0x588ff08d6ed0";
+"0x588ff08d6ed0"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d6ed0" -> "0x588ff08d6c60";
+"0x588ff08d6c60"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d6ed0" -> "0x588ff08d6b50";
+"0x588ff08d6b50"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d6ed0" -> "0x588ff08d6d20";
+"0x588ff08d6d20"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d9db0" -> "0x588ff08d9c80";
+"0x588ff08d9c80"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d9c80" -> "0x588ff08d86a0";
+"0x588ff08d86a0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d86a0" -> "0x588ff08d7880";
+"0x588ff08d7880"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d86a0" -> "0x588ff08d8240";
+"0x588ff08d8240"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d8240" -> "0x588ff08d7fd0";
+"0x588ff08d7fd0"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d8240" -> "0x588ff08d7ec0";
+"0x588ff08d7ec0"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d8240" -> "0x588ff08d8090";
+"0x588ff08d8090"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d9c80" -> "0x588ff08d98e0";
+"0x588ff08d98e0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d98e0" -> "0x588ff08d8800";
+"0x588ff08d8800"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d98e0" -> "0x588ff08d9480";
+"0x588ff08d9480"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d9480" -> "0x588ff08d9210";
+"0x588ff08d9210"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d9480" -> "0x588ff08d9100";
+"0x588ff08d9100"[label="OPERATOR (+)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08d9100" -> "0x588ff08d89c0";
+"0x588ff08d89c0"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d9100" -> "0x588ff08d8c80";
+"0x588ff08d8c80"[label="INT (1)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08d9480" -> "0x588ff08d92d0";
+"0x588ff08d92d0"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dba00" -> "0x588ff08db8d0";
+"0x588ff08db8d0"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08db8d0" -> "0x588ff08daf70";
+"0x588ff08daf70"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08daf70" -> "0x588ff08d9e70";
+"0x588ff08d9e70"[label="NAME (array)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08daf70" -> "0x588ff08dab10";
+"0x588ff08dab10"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dab10" -> "0x588ff08da8a0";
+"0x588ff08da8a0"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dab10" -> "0x588ff08da790";
+"0x588ff08da790"[label="OPERATOR (+)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08da790" -> "0x588ff08da050";
+"0x588ff08da050"[label="NAME (j)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08da790" -> "0x588ff08da310";
+"0x588ff08da310"[label="INT (1)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dab10" -> "0x588ff08da960";
+"0x588ff08da960"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08db8d0" -> "0x588ff08db530";
+"0x588ff08db530"[label="NAME (temp)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dccd0" -> "0x588ff08dc8a0";
+"0x588ff08dc8a0"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dc8a0" -> "0x588ff08dbf40";
+"0x588ff08dbf40"[label="NAME (swapped)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dc8a0" -> "0x588ff08dc500";
+"0x588ff08dc500"[label="KEYWORD (True)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ec2b0" -> "0x588ff08ec1a0";
+"0x588ff08ec1a0"[label="funcdef" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ec1a0" -> "0x588ff08ec020";
+"0x588ff08ec020"[label="KEYWORD (def)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ec1a0" -> "0x588ff08ec0e0";
+"0x588ff08ec0e0"[label="NAME (main)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ec1a0" -> "0x588ff08dec60";
+"0x588ff08dec60"[label="parameters" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dec60" -> "0x588ff08deba0";
+"0x588ff08deba0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dec60" -> "0x588ff08deae0";
+"0x588ff08deae0"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ec1a0" -> "0x588ff08ebf60";
+"0x588ff08ebf60"[label="funcdef1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ebf60" -> "0x588ff08ebea0";
+"0x588ff08ebea0"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ebf60" -> "0x588ff08ebdc0";
+"0x588ff08ebdc0"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ebdc0" -> "0x588ff08e8530";
+"0x588ff08e8530"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e8530" -> "0x588ff08e66b0";
+"0x588ff08e66b0"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e66b0" -> "0x588ff08e51e0";
+"0x588ff08e51e0"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e51e0" -> "0x588ff08e3ee0";
+"0x588ff08e3ee0"[label="suite1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e3ee0" -> "0x588ff08e2c00";
+"0x588ff08e2c00"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e2c00" -> "0x588ff08e26e0";
+"0x588ff08e26e0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e26e0" -> "0x588ff08df240";
+"0x588ff08df240"[label="NAME (data)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e26e0" -> "0x588ff08e00e0";
+"0x588ff08e00e0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e00e0" -> "0x588ff08df3a0";
+"0x588ff08df3a0"[label="NAME (list)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e00e0" -> "0x588ff08dfd60";
+"0x588ff08dfd60"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08dfd60" -> "0x588ff08dfaf0";
+"0x588ff08dfaf0"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dfd60" -> "0x588ff08df9e0";
+"0x588ff08df9e0"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08dfd60" -> "0x588ff08dfbb0";
+"0x588ff08dfbb0"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e2c00" -> "0x588ff08e2540";
+"0x588ff08e2540"[label="atom" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e2540" -> "0x588ff08e2030";
+"0x588ff08e2030"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e2540" -> "0x588ff08e1f40";
+"0x588ff08e1f40"[label="testlist_comp" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e1f40" -> "0x588ff08e0580";
+"0x588ff08e0580"[label="INT (2)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e1f40" -> "0x588ff08e1e30";
+"0x588ff08e1e30"[label="testlist_comp2" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e1e30" -> "0x588ff08e1800";
+"0x588ff08e1800"[label="testlist_comp2" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e1800" -> "0x588ff08e11d0";
+"0x588ff08e11d0"[label="testlist_comp2" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e11d0" -> "0x588ff08e0ba0";
+"0x588ff08e0ba0"[label="testlist_comp2" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e0ba0" -> "0x588ff08e0ae0";
+"0x588ff08e0ae0"[label="DELIMITER (,)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e0ba0" -> "0x588ff08e0a00";
+"0x588ff08e0a00"[label="INT (45)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e11d0" -> "0x588ff08e1110";
+"0x588ff08e1110"[label="DELIMITER (,)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e11d0" -> "0x588ff08e1030";
+"0x588ff08e1030"[label="INT (0)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e1800" -> "0x588ff08e1740";
+"0x588ff08e1740"[label="DELIMITER (,)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e1800" -> "0x588ff08e1660";
+"0x588ff08e1660"[label="INT (11)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e1e30" -> "0x588ff08e1d70";
+"0x588ff08e1d70"[label="DELIMITER (,)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e1e30" -> "0x588ff08e1c90";
+"0x588ff08e1c90"[label="INT (9)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e2540" -> "0x588ff08e20f0";
+"0x588ff08e20f0"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e3ee0" -> "0x588ff08e3dd0";
+"0x588ff08e3dd0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e3dd0" -> "0x588ff08e2cc0";
+"0x588ff08e2cc0"[label="NAME (bubbleSort)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e3dd0" -> "0x588ff08e3670";
+"0x588ff08e3670"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e3670" -> "0x588ff08e34d0";
+"0x588ff08e34d0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e3670" -> "0x588ff08e3410";
+"0x588ff08e3410"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e3410" -> "0x588ff08e3240";
+"0x588ff08e3240"[label="NAME (data)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e3410" -> "0x588ff08e3350";
+"0x588ff08e3350"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e51e0" -> "0x588ff08e50d0";
+"0x588ff08e50d0"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e50d0" -> "0x588ff08e3fa0";
+"0x588ff08e3fa0"[label="NAME (print)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e50d0" -> "0x588ff08e4970";
+"0x588ff08e4970"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e4970" -> "0x588ff08e47d0";
+"0x588ff08e47d0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e4970" -> "0x588ff08e4710";
+"0x588ff08e4710"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e4710" -> "0x588ff08e4540";
+"0x588ff08e4540"[label="STRING ('Sorted:')" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e4710" -> "0x588ff08e4650";
+"0x588ff08e4650"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e66b0" -> "0x588ff08e6580";
+"0x588ff08e6580"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e6580" -> "0x588ff08e6220";
+"0x588ff08e6220"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e6220" -> "0x588ff08e5720";
+"0x588ff08e5720"[label="NAME (i)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e6220" -> "0x588ff08e5c00";
+"0x588ff08e5c00"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e6580" -> "0x588ff08e6080";
+"0x588ff08e6080"[label="INT (0)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e8530" -> "0x588ff08e8400";
+"0x588ff08e8400"[label="OPERATOR (=)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e8400" -> "0x588ff08e80a0";
+"0x588ff08e80a0"[label="DELIMITER (:)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e80a0" -> "0x588ff08e6bf0";
+"0x588ff08e6bf0"[label="NAME (l)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e80a0" -> "0x588ff08e70d0";
+"0x588ff08e70d0"[label="NAME (int)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e8400" -> "0x588ff08e7f00";
+"0x588ff08e7f00"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e7f00" -> "0x588ff08e71b0";
+"0x588ff08e71b0"[label="NAME (len)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e7f00" -> "0x588ff08e7b60";
+"0x588ff08e7b60"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e7b60" -> "0x588ff08e79c0";
+"0x588ff08e79c0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e7b60" -> "0x588ff08e7900";
+"0x588ff08e7900"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e7900" -> "0x588ff08e7730";
+"0x588ff08e7730"[label="NAME (data)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e7900" -> "0x588ff08e7840";
+"0x588ff08e7840"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ebdc0" -> "0x588ff08eb9b0";
+"0x588ff08eb9b0"[label="for_stmt" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08eb9b0" -> "0x588ff08eb770";
+"0x588ff08eb770"[label="KEYWORD (for)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eb9b0" -> "0x588ff08e87f0";
+"0x588ff08e87f0"[label="NAME (i)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eb9b0" -> "0x588ff08eb830";
+"0x588ff08eb830"[label="KEYWORD (in)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eb9b0" -> "0x588ff08e9710";
+"0x588ff08e9710"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e9710" -> "0x588ff08e8900";
+"0x588ff08e8900"[label="NAME (range)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e9710" -> "0x588ff08e9290";
+"0x588ff08e9290"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e9290" -> "0x588ff08e90f0";
+"0x588ff08e90f0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e9290" -> "0x588ff08e9030";
+"0x588ff08e9030"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08e9030" -> "0x588ff08e8e60";
+"0x588ff08e8e60"[label="NAME (l)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08e9030" -> "0x588ff08e8f70";
+"0x588ff08e8f70"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eb9b0" -> "0x588ff08eb8f0";
+"0x588ff08eb8f0"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eb9b0" -> "0x588ff08eb660";
+"0x588ff08eb660"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08eb660" -> "0x588ff08e9840";
+"0x588ff08e9840"[label="NAME (print)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eb660" -> "0x588ff08eabb0";
+"0x588ff08eabb0"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08eabb0" -> "0x588ff08eaa10";
+"0x588ff08eaa10"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eabb0" -> "0x588ff08ea950";
+"0x588ff08ea950"[label="trailer1" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ea950" -> "0x588ff08ea780";
+"0x588ff08ea780"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ea780" -> "0x588ff08e9940";
+"0x588ff08e9940"[label="NAME (data)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ea780" -> "0x588ff08ea320";
+"0x588ff08ea320"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ea320" -> "0x588ff08ea0b0";
+"0x588ff08ea0b0"[label="DELIMITER ([)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ea320" -> "0x588ff08e9fa0";
+"0x588ff08e9fa0"[label="NAME (i)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ea320" -> "0x588ff08ea170";
+"0x588ff08ea170"[label="DELIMITER (])" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ea950" -> "0x588ff08ea890";
+"0x588ff08ea890"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eded0" -> "0x588ff08edbf0";
+"0x588ff08edbf0"[label="if_stmt" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08edbf0" -> "0x588ff08eda70";
+"0x588ff08eda70"[label="KEYWORD (if)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08edbf0" -> "0x588ff08eca10";
+"0x588ff08eca10"[label="OPERATOR (==)" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08eca10" -> "0x588ff08ec470";
+"0x588ff08ec470"[label="NAME (__name__)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eca10" -> "0x588ff08ec750";
+"0x588ff08ec750"[label="STRING (\"__main__\")" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08edbf0" -> "0x588ff08edb30";
+"0x588ff08edb30"[label="DELIMITER (:)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08edbf0" -> "0x588ff08ed960";
+"0x588ff08ed960"[label="atom_expr" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08ed960" -> "0x588ff08ecb30";
+"0x588ff08ecb30"[label="NAME (main)" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08ed960" -> "0x588ff08eceb0";
+"0x588ff08eceb0"[label="trailer" shape=ellipse style=filled color="dodgerblue" fillcolor="grey"];
+
+"0x588ff08eceb0" -> "0x588ff08eccf0";
+"0x588ff08eccf0"[label="DELIMITER (()" shape=box style=filled color="red" fillcolor="grey"];
+
+"0x588ff08eceb0" -> "0x588ff08ecc30";
+"0x588ff08ecc30"[label="DELIMITER ())" shape=box style=filled color="red" fillcolor="grey"];
+
+}

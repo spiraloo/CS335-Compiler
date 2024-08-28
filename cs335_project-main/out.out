@@ -1,0 +1,481 @@
+  Example: • NEWLINE
+  Shift derivation
+    file_input2
+    ↳ 5: • NEWLINE
+  Reduce derivation
+    file_input2
+    ↳ 4: stmt
+         ↳ 32: simple_stmt
+               ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                     ↳ 38: expr_stmt ↳ 35: ε
+                           ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_CLASS NAME ':' • NEWLINE INDENT suite1 DEDENT ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                     $end
+         ↳ 1: file_input1                                                                                     ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: classdef
+                                          ↳ 197: KEYWORD_CLASS NAME ':' suite
+                                                                        ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_CLASS NAME ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                       $end
+         ↳ 1: file_input1                                                                                                       ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 91: classdef
+                                                ↳ 197: KEYWORD_CLASS NAME ':' suite
+                                                                              ↳ 102: simple_stmt
+                                                                                     ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                           ↳ 38: expr_stmt
+                                                                                                 ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_IF test ':' • NEWLINE INDENT suite1 DEDENT if_stmt1 if_stmt2 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                   $end
+         ↳ 1: file_input1                                                                                                   ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: if_stmt
+                                          ↳ 92: KEYWORD_IF test ':' suite                                 if_stmt1 if_stmt2
+                                                                    ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_IF test ':' • simple_stmt2 NEWLINE if_stmt1 if_stmt2 ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                     $end
+         ↳ 1: file_input1                                                                                                                     ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 87: if_stmt
+                                                ↳ 92: KEYWORD_IF test ':' suite                                             if_stmt1 if_stmt2
+                                                                          ↳ 102: simple_stmt
+                                                                                 ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                       ↳ 38: expr_stmt
+                                                                                             ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_WHILE test ':' • NEWLINE INDENT suite1 DEDENT while_stmt1 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                $end
+         ↳ 1: file_input1                                                                                                ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: while_stmt
+                                          ↳ 97: KEYWORD_WHILE test ':' suite                                 while_stmt1
+                                                                       ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_WHILE test ':' • simple_stmt2 NEWLINE while_stmt1 ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                  $end
+         ↳ 1: file_input1                                                                                                                  ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 88: while_stmt
+                                                ↳ 97: KEYWORD_WHILE test ':' suite                                             while_stmt1
+                                                                             ↳ 102: simple_stmt
+                                                                                    ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                          ↳ 38: expr_stmt
+                                                                                                ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  Example: small_stmt simple_stmt2 ';' • NEWLINE
+  Shift derivation
+    simple_stmt
+    ↳ 34: small_stmt simple_stmt2 ';' • NEWLINE
+  Reduce derivation
+    simple_stmt
+    ↳ 35: small_stmt simple_stmt2                           NEWLINE
+                     ↳ 37: simple_stmt2 ';' small_stmt
+                                            ↳ 38: expr_stmt
+                                                  ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token ',' [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME '*' • ',' tfpdef typedargslist1 typedargslist2 typedargslist5 typedargslist ')' ':' ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                  $end
+         ↳ 1: file_input1                                                                                                                                                  ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                       ':'
+                                                                      ↳ 9: typedargslist                                                             typedargslist ')'
+                                                                           ↳ 12: '*' typedargslist2                                   typedargslist5
+                                                                                     ↳ 18: • ',' tfpdef typedargslist1 typedargslist2
+  Second example: file_input1 KEYWORD_DEF NAME '(' '*' • ',' ')' ':' ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                      $end
+         ↳ 1: file_input1                                                                                                      ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                           ':'
+                                                                      ↳ 9: '(' typedargslist                           ')'
+                                                                               ↳ 12: '*' typedargslist2 typedargslist5
+                                                                                         ↳ 17: ε •      ↳ 27: ','
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_CLASS NAME '(' ')' ':' • NEWLINE INDENT suite1 DEDENT ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                             $end
+         ↳ 1: file_input1                                                                                             ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: classdef
+                                          ↳ 198: KEYWORD_CLASS NAME '(' ')' ':' suite
+                                                                                ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_CLASS NAME '(' ')' ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                               $end
+         ↳ 1: file_input1                                                                                                               ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 91: classdef
+                                                ↳ 198: KEYWORD_CLASS NAME '(' ')' ':' suite
+                                                                                      ↳ 102: simple_stmt
+                                                                                             ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                   ↳ 38: expr_stmt
+                                                                                                         ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token ',' [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME '*' tfpdef • ',' tfpdef typedargslist1 typedargslist2 typedargslist5 typedargslist ')' ':' ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                         $end
+         ↳ 1: file_input1                                                                                                                                                         ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                              ':'
+                                                                      ↳ 9: typedargslist                                                                    typedargslist ')'
+                                                                           ↳ 11: '*' tfpdef typedargslist2                                   typedargslist5
+                                                                                            ↳ 18: • ',' tfpdef typedargslist1 typedargslist2
+  Second example: file_input1 KEYWORD_DEF NAME '(' '*' tfpdef • ',' ')' ':' ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                             $end
+         ↳ 1: file_input1                                                                                                             ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                  ':'
+                                                                      ↳ 9: '(' typedargslist                                  ')'
+                                                                               ↳ 11: '*' tfpdef typedargslist2 typedargslist5
+                                                                                                ↳ 17: ε •      ↳ 27: ','
+parser.y: warning: shift/reduce conflict on token ',' [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME tfpdef typedargslist1 • ',' tfpdef typedargslist1 typedargslist2 typedargslist3 typedargslist ')' ':' ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                                    $end
+         ↳ 1: file_input1                                                                                                                                                                    ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                                         ':'
+                                                                      ↳ 9: typedargslist                                                                               typedargslist ')'
+                                                                           ↳ 10: tfpdef typedargslist1 typedargslist2                                   typedargslist3
+                                                                                                       ↳ 18: • ',' tfpdef typedargslist1 typedargslist2
+  Second example: file_input1 KEYWORD_DEF NAME '(' tfpdef typedargslist1 • ',' typedargslist4 ')' ':' ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                  $end
+         ↳ 1: file_input1                                                                                                                                  ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                       ':'
+                                                                      ↳ 9: '(' typedargslist                                                       ')'
+                                                                               ↳ 10: tfpdef typedargslist1 typedargslist2 typedargslist3
+                                                                                                           ↳ 17: ε •      ↳ 20: ',' typedargslist4
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_FOR exprlist KEYWORD_IN testlist ':' • NEWLINE INDENT suite1 DEDENT for_stmt1 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                     $end
+         ↳ 1: file_input1                                                                                                                     ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: for_stmt
+                                          ↳ 100: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite                                 for_stmt1
+                                                                                              ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_FOR exprlist KEYWORD_IN testlist ':' • simple_stmt2 NEWLINE for_stmt1 ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                       $end
+         ↳ 1: file_input1                                                                                                                                       ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 89: for_stmt
+                                                ↳ 100: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite                                             for_stmt1
+                                                                                                    ↳ 102: simple_stmt
+                                                                                                           ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                                 ↳ 38: expr_stmt
+                                                                                                                       ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_CLASS NAME '(' arglist ')' ':' • NEWLINE INDENT suite1 DEDENT ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                     $end
+         ↳ 1: file_input1                                                                                                     ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: classdef
+                                          ↳ 196: KEYWORD_CLASS NAME '(' arglist ')' ':' suite
+                                                                                        ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_CLASS NAME '(' arglist ')' ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                       $end
+         ↳ 1: file_input1                                                                                                                       ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 91: classdef
+                                                ↳ 196: KEYWORD_CLASS NAME '(' arglist ')' ':' suite
+                                                                                              ↳ 102: simple_stmt
+                                                                                                     ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                           ↳ 38: expr_stmt
+                                                                                                                 ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME parameters OP_ARROW test ':' • NEWLINE INDENT suite1 DEDENT ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                          $end
+         ↳ 1: file_input1                                                                                                          ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: funcdef
+                                          ↳ 7: KEYWORD_DEF NAME parameters OP_ARROW test ':' suite
+                                                                                             ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_DEF NAME parameters OP_ARROW test ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                            $end
+         ↳ 1: file_input1                                                                                                                            ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 7: KEYWORD_DEF NAME parameters OP_ARROW test ':' suite
+                                                                                                   ↳ 102: simple_stmt
+                                                                                                          ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                                ↳ 38: expr_stmt
+                                                                                                                      ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_WHILE test ':' KEYWORD_ELSE ':' • NEWLINE INDENT suite1 DEDENT while_stmt1 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                             $end
+         ↳ 1: file_input1                                                                                                                             ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 88: while_stmt
+                                                ↳ 97: KEYWORD_WHILE test ':' while_stmt1                                                  while_stmt1
+                                                                             ↳ 99: KEYWORD_ELSE ':' suite
+                                                                                                    ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_WHILE test ':' suite KEYWORD_ELSE ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                   $end
+         ↳ 1: file_input1                                                                                                                                   ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 88: while_stmt
+                                                ↳ 97: KEYWORD_WHILE test ':' suite while_stmt1
+                                                                                   ↳ 99: KEYWORD_ELSE ':' suite
+                                                                                                          ↳ 102: simple_stmt
+                                                                                                                 ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                                       ↳ 38: expr_stmt
+                                                                                                                             ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token ',' [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME '(' ',' tfpdef typedargslist1 • ',' tfpdef typedargslist1 typedargslist2 typedargslist2 typedargslist5 ')' ':' ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                                                   $end
+         ↳ 1: file_input1                                                                                                                                                                                   ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                                                        ':'
+                                                                      ↳ 9: '(' typedargslist                                                                                                        ')'
+                                                                               ↳ 12: typedargslist2                                                                   typedargslist2 typedargslist5
+                                                                                     ↳ 18: ',' tfpdef typedargslist1 typedargslist2
+                                                                                                                     ↳ 18: • ',' tfpdef typedargslist1 typedargslist2
+  Second example: file_input1 KEYWORD_DEF NAME '(' '*' ',' tfpdef typedargslist1 • ',' ')' ':' ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                      $end
+         ↳ 1: file_input1                                                                                                                                      ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                           ':'
+                                                                      ↳ 9: '(' typedargslist                                                           ')'
+                                                                               ↳ 12: '*' typedargslist2                                 typedargslist5
+                                                                                         ↳ 18: ',' tfpdef typedargslist1 typedargslist2 ↳ 27: ','
+                                                                                                                         ↳ 17: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_IF test ':' KEYWORD_ELIF test ':' • NEWLINE INDENT suite1 DEDENT if_stmt1 if_stmt1 if_stmt2 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                              $end
+         ↳ 1: file_input1                                                                                                                                              ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 87: if_stmt
+                                                ↳ 92: KEYWORD_IF test ':' if_stmt1                                                                   if_stmt1 if_stmt2
+                                                                          ↳ 94: KEYWORD_ELIF test ':' suite                                 if_stmt1
+                                                                                                      ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_IF test ':' suite KEYWORD_ELIF test ':' • simple_stmt2 NEWLINE if_stmt1 if_stmt2 ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                       $end
+         ↳ 1: file_input1                                                                                                                                                       ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 87: if_stmt
+                                                ↳ 92: KEYWORD_IF test ':' suite if_stmt1                                                                               if_stmt2
+                                                                                ↳ 94: KEYWORD_ELIF test ':' suite                                             if_stmt1
+                                                                                                            ↳ 102: simple_stmt
+                                                                                                                   ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                                         ↳ 38: expr_stmt
+                                                                                                                               ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_IF test ':' suite KEYWORD_ELSE ':' • NEWLINE INDENT suite1 DEDENT if_stmt2 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                             $end
+         ↳ 1: file_input1                                                                                                                             ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 87: if_stmt
+                                                ↳ 92: KEYWORD_IF test ':' suite if_stmt2                                                     if_stmt2
+                                                                                ↳ 96: KEYWORD_ELSE ':' suite
+                                                                                                       ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_IF test ':' suite if_stmt1 KEYWORD_ELSE ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                         $end
+         ↳ 1: file_input1                                                                                                                                         ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 87: if_stmt
+                                                ↳ 92: KEYWORD_IF test ':' suite if_stmt1 if_stmt2
+                                                                                         ↳ 96: KEYWORD_ELSE ':' suite
+                                                                                                                ↳ 102: simple_stmt
+                                                                                                                       ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                                             ↳ 38: expr_stmt
+                                                                                                                                   ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token ',' [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME '(' tfpdef typedargslist1 typedargslist2 '*' • ',' tfpdef typedargslist1 typedargslist2 typedargslist5 typedargslist4 ')' ':' ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                                                                        $end
+         ↳ 1: file_input1                                                                                                                                                                                                        ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                                                                             ':'
+                                                                      ↳ 9: '(' typedargslist                                                                                                                             ')'
+                                                                               ↳ 10: tfpdef typedargslist1 typedargslist2 typedargslist3
+                                                                                                                          ↳ 20: typedargslist4                                                            typedargslist4
+                                                                                                                                ↳ 23: '*' typedargslist2                                   typedargslist5
+                                                                                                                                          ↳ 18: • ',' tfpdef typedargslist1 typedargslist2
+  Second example: file_input1 KEYWORD_DEF NAME '(' tfpdef typedargslist1 typedargslist2 ',' '*' • ',' ')' ':' ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                           $end
+         ↳ 1: file_input1                                                                                                                                                           ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                                ':'
+                                                                      ↳ 9: '(' typedargslist                                                                                ')'
+                                                                               ↳ 10: tfpdef typedargslist1 typedargslist2 typedargslist3
+                                                                                                                          ↳ 20: ',' typedargslist4
+                                                                                                                                    ↳ 23: '*' typedargslist2 typedargslist5
+                                                                                                                                              ↳ 17: ε •      ↳ 27: ','
+parser.y: warning: shift/reduce conflict on token NEWLINE [-Wcounterexamples]
+  First example: file_input1 KEYWORD_FOR exprlist KEYWORD_IN testlist ':' KEYWORD_ELSE ':' • NEWLINE INDENT suite1 DEDENT for_stmt1 ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                   $end
+         ↳ 1: file_input1                                                                                                                                                   ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 89: for_stmt
+                                                ↳ 100: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' for_stmt1                                                     for_stmt1
+                                                                                                    ↳ 101: KEYWORD_ELSE ':' suite
+                                                                                                                            ↳ 103: • NEWLINE INDENT suite1 DEDENT
+  Second example: file_input1 KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite KEYWORD_ELSE ':' • simple_stmt2 NEWLINE ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                           $end
+         ↳ 1: file_input1                                                                                                                                                           ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 89: for_stmt
+                                                ↳ 100: KEYWORD_FOR exprlist KEYWORD_IN testlist ':' suite for_stmt1
+                                                                                                          ↳ 101: KEYWORD_ELSE ':' suite
+                                                                                                                                  ↳ 102: simple_stmt
+                                                                                                                                         ↳ 35: small_stmt      simple_stmt2 NEWLINE
+                                                                                                                                               ↳ 38: expr_stmt
+                                                                                                                                                     ↳ 44: ε •
+parser.y: warning: shift/reduce conflict on token ',' [-Wcounterexamples]
+  First example: file_input1 KEYWORD_DEF NAME '(' tfpdef typedargslist1 typedargslist2 '*' tfpdef • ',' tfpdef typedargslist1 typedargslist2 typedargslist5 typedargslist4 ')' ':' ENDMARKER $end
+  Shift derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                                                                               $end
+         ↳ 1: file_input1                                                                                                                                                                                                               ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                                                                                    ':'
+                                                                      ↳ 9: '(' typedargslist                                                                                                                                    ')'
+                                                                               ↳ 10: tfpdef typedargslist1 typedargslist2 typedargslist3
+                                                                                                                          ↳ 20: typedargslist4                                                                   typedargslist4
+                                                                                                                                ↳ 22: '*' tfpdef typedargslist2                                   typedargslist5
+                                                                                                                                                 ↳ 18: • ',' tfpdef typedargslist1 typedargslist2
+  Second example: file_input1 KEYWORD_DEF NAME '(' tfpdef typedargslist1 typedargslist2 ',' '*' tfpdef • ',' ')' ':' ENDMARKER $end
+  Reduce derivation
+    $accept
+    ↳ 0: file_input                                                                                                                                                                                  $end
+         ↳ 1: file_input1                                                                                                                                                                  ENDMARKER
+              ↳ 3: file_input1 file_input2
+                               ↳ 4: stmt
+                                    ↳ 33: compound_stmt
+                                          ↳ 90: funcdef
+                                                ↳ 6: KEYWORD_DEF NAME parameters                                                                                                       ':'
+                                                                      ↳ 9: '(' typedargslist                                                                                       ')'
+                                                                               ↳ 10: tfpdef typedargslist1 typedargslist2 typedargslist3
+                                                                                                                          ↳ 20: ',' typedargslist4
+                                                                                                                                    ↳ 22: '*' tfpdef typedargslist2 typedargslist5
+                                                                                                                                                     ↳ 17: ε •      ↳ 27: ','

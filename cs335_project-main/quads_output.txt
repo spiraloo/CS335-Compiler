@@ -1,0 +1,100 @@
+0:		beginfunc bubbleSort_int
+1:		popparam array
+2:		stackptr -4
+3:		i = 0
+4:		param array
+5:		stackptr +4
+6:		call len@any 1
+7:		t0 return_value
+8:		l = t0
+9:		i = 0
+10:		t1 = l
+11:		t2 = i < t1
+12:		if t2 goto 14
+13:		goto 52
+14:		swapped = False
+15:		j = 0
+16:		t3 = l - i
+17:		t4 = t3 - 1
+18:		m = t4
+19:		j = 0
+20:		t5 = m
+21:		t6 = j < t5
+22:		if t6 goto 24
+23:		goto 49
+24:		t7 = j * 4
+25:		t7 = array + t7
+26:		t8 = j + 1
+27:		t9 = t8 * 4
+28:		t9 = array + t9
+29:		t10 = *t7 > *t9
+30:		if t10 goto 32
+31:		goto 46
+32:		t11 = j * 4
+33:		t11 = array + t11
+34:		temp = *t11
+35:		t12 = j + 1
+36:		t13 = t12 * 4
+37:		t13 = array + t13
+38:		t14 = j * 4
+39:		t14 = array + t14
+40:		*t14 = *t13
+41:		t15 = j + 1
+42:		t16 = t15 * 4
+43:		t16 = array + t16
+44:		*t16 = temp
+45:		swapped = True
+46:		t17 = j + 1
+47:		j = t17
+48:		goto 21
+49:		t18 = i + 1
+50:		i = t18
+51:		goto 11
+52:		endfunc bubbleSort_int
+53:		beginfunc main
+54:		param 20
+55:		call memalloc 1
+56:		popparam t19
+57:		data = t19
+58:		*t19 = 2
+59:		t19 = t19 + 4
+60:		*t19 = 45
+61:		t19 = t19 + 4
+62:		*t19 = 0
+63:		t19 = t19 + 4
+64:		*t19 = 11
+65:		t19 = t19 + 4
+66:		*t19 = 9
+67:		t19 = t19 + 4
+68:		param data
+69:		stackptr +4
+70:		call bubbleSort_int 1
+71:		t20 return_value
+72:		param 'Sorted:'
+73:		stackptr +8
+74:		call print@any 1
+75:		t21 return_value
+76:		i = 0
+77:		param data
+78:		stackptr +4
+79:		call len@any 1
+80:		t22 return_value
+81:		l = t22
+82:		i = 0
+83:		t23 = l
+84:		t24 = i < t23
+85:		if t24 goto 87
+86:		goto 94
+87:		param data
+88:		stackptr +4
+89:		call print@any 1
+90:		t25 return_value
+91:		t26 = i + 1
+92:		i = t26
+93:		goto 84
+94:		endfunc main
+95:		t27 = __name__ == "__main__"
+96:		if t27 goto 98
+97:		goto 100
+98:		call main 0
+99:		t28 return_value
